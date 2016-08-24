@@ -1,20 +1,31 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- Tema Base com configurações genéricas -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Cor primária do aplicativo -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Variação escura da cor primária para a status bar e contextual app bars -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- Cor para o efeito ripple -->
+        <item name="colorControlHighlight">@color/control_highlight</item>
+        <!-- Action Mode Overlay -->
+        <item name="windowActionModeOverlay">true</item>
+        <!-- Cor da action bar de contexto (CAB) -->
+        <item name="actionModeBackground">@color/colorPrimary</item>
+    </style>
+    <!-- Tema para o Nav Drawer -->
+    <style name="AppTheme.NavDrawer" parent="AppTheme">
+        <!-- Habilita o overlay na action bar -->
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="MyCustomToolbarStyle" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <!-- item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewHoloLight</item -->
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>
