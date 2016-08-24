@@ -28,4 +28,10 @@
         <item name="colorControlActivated">@android:color/white</item>
         <!-- item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewHoloLight</item -->
     </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

@@ -24,28 +24,28 @@ public class LoginActivity extends AppCompatActivity {
         // Address the email and password field
         emailEditText = (EditText) findViewById(R.id.username);
         passEditText = (EditText) findViewById(R.id.password);
-        emailEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
-        passEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
 
     }
 
     public void checkLogin(View arg0) {
+
+        //Verifica o e-mail e imprime um erro caso não seja válido
         TextInputLayout tilEmail = (TextInputLayout) findViewById(R.id.text_input_layout_email);
         final String email = emailEditText.getText().toString();
         if (!isValidEmail(email)) {
-            //Set error message for email field
             tilEmail.setError("E-mail inválido");
         }
 
+        //Verifica o password e imprime um erro caso não seja válido
+        TextInputLayout tilPassword = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         final String pass = passEditText.getText().toString();
         if (!isValidPassword(pass)) {
-            //Set error message for password field
-            passEditText.setError("Sua senha não pode ser vazia");
+            tilPassword.setError("Sua senha não pode ser vazia");
         }
 
         if(isValidEmail(email) && isValidPassword(pass))
         {
-            // Validation Completed
+            // Tudo certo, bora!
         }
 
     }
