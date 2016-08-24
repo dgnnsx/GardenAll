@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/fundo"
+    android:padding="30dp"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="150dip"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:src="@mipmap/logotipo" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        app:errorTextAppearance="@style/error_appearance">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/username"
+            android:drawableLeft="@mipmap/email"
+            android:hint="E-mail"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFF"
+            android:paddingLeft="0dp"
+            android:drawablePadding="5dp"
+            android:textColorHint="#999"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:drawableLeft="@mipmap/lock"
+        android:hint="Senha"
+        android:layout_marginTop="18dp"
+        android:textColor="#FFF"
+        android:paddingLeft="0dp"
+        android:drawablePadding="5dp"
+        android:textColorHint="#999"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Entrar"
+        android:id="@+id/button"
+        android:background="@drawable/selector_xml_btn_yellow"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFF"
+        android:onClick="checkLogin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Esqueceu sua senha?"
+        android:id="@+id/textView3"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="#FFF"/>
+
+    <ImageButton
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_fb_login"
+        android:background="@mipmap/facebook"
+        android:scaleType="fitXY"
+        android:layout_height="65dp"
+        android:layout_width="65dp"
+        android:maxWidth="150dip"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:onClick="checkLogin" />
+
+</LinearLayout>
