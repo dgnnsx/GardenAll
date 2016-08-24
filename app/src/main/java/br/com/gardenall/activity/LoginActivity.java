@@ -1,5 +1,6 @@
 package br.com.gardenall.activity;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.com.gardenall.R;
+import br.com.gardenall.utils.Prefs;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,33 +21,41 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_activity);
 
-        // Address the email and password field
-        emailEditText = (EditText) findViewById(R.id.username);
-        passEditText = (EditText) findViewById(R.id.password);
+        // Se o usuário já tiver logado entra direto, senão faz o login
+        boolean login = Prefs.getBoolean(this, "login");
+        if(login) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            setContentView(R.layout.activity_login_activity);
 
+            // Address the email and password field
+            emailEditText = (EditText) findViewById(R.id.username);
+            passEditText = (EditText) findViewById(R.id.password);
+            emailEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
+            passEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
+        }
     }
 
     public void checkLogin(View arg0) {
-
-        //Verifica o e-mail e imprime um erro caso não seja válido
         TextInputLayout tilEmail = (TextInputLayout) findViewById(R.id.text_input_layout_email);
         final String email = emailEditText.getText().toString();
         if (!isValidEmail(email)) {
+            //Set error message for email field
             tilEmail.setError("E-mail inválido");
         }
 
-        //Verifica o password e imprime um erro caso não seja válido
-        TextInputLayout tilPassword = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         final String pass = passEditText.getText().toString();
         if (!isValidPassword(pass)) {
-            tilPassword.setError("Sua senha não pode ser vazia");
+            //Set error message for password field
+            passEditText.setError("Sua senha não pode ser vazia");
         }
 
         if(isValidEmail(email) && isValidPassword(pass))
         {
-            // Tudo certo, bora!
+            // Validation Completed
         }
 
     }

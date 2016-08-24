@@ -42,8 +42,7 @@
         android:id="@+id/text_input_layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorTextAppearance="@style/error_appearance"
-        app:hintAnimationEnabled="false">
+        app:errorTextAppearance="@style/error_appearance">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
