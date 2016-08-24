@@ -30,6 +30,7 @@
     </style>
 
     <style name="error_appearance" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@android:color/holo_green_dark</item>
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

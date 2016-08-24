@@ -22,9 +22,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Se o usuário já tiver logado entra direto, senão faz o login
+        // Se o usuário já tiver logado entra direto, senão vai para tela de login
         boolean login = Prefs.getBoolean(this, "login");
-        if(login) {
+        if(login == true) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
             // Address the email and password field
             emailEditText = (EditText) findViewById(R.id.username);
             passEditText = (EditText) findViewById(R.id.password);
-            emailEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
-            passEditText.getBackground().setColorFilter(getResources().getColor(R.color.black, null), PorterDuff.Mode.SRC_ATOP);
+            emailEditText.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+            passEditText.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -53,21 +53,30 @@ public class LoginActivity extends AppCompatActivity {
             passEditText.setError("Sua senha não pode ser vazia");
         }
 
+        // Validation Completed
         if(isValidEmail(email) && isValidPassword(pass))
         {
-            // Validation Completed
+            // Salva o login
+            Prefs.setBoolean(getBaseContext(), "login", true);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-
     }
 
     // validating email id
     private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+        /*String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return matcher.matches();*/
+
+        if(email != null && email.length() >= 4)
+            return true;
+        else
+            return false;
     }
 
     // validating password

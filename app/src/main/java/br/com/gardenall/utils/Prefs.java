@@ -23,7 +23,7 @@ public class Prefs {
 
     public static boolean getBoolean(Context context, String flag) {
         SharedPreferences pref = context.getSharedPreferences(PREF_ID, 0);
-        boolean b = pref.getBoolean(flag, true);
+        boolean b = pref.getBoolean(flag, false);
         return b;
     }
 
@@ -49,7 +49,7 @@ public class Prefs {
 
     public static String getString(Context context, String flag) {
         SharedPreferences pref = context.getSharedPreferences(PREF_ID, 0);
-        String s = pref.getString(flag, "");
+        String s = pref.getString(flag, null);
         return s;
     }
 }
