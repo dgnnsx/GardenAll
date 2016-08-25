@@ -12,7 +12,7 @@
         <item name="windowActionModeOverlay">true</item>
         <!-- Cor da action bar de contexto (CAB) -->
         <item name="actionModeBackground">@color/colorPrimary</item>
-        <item name="colorAccent">@color/background_floating_material_light</item>
+        <item name="colorAccent">@color/white</item>
     </style>
     <!-- Tema para o Nav Drawer -->
     <style name="AppTheme.NavDrawer" parent="AppTheme">

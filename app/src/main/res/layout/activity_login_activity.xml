@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="150dip"
+        android:maxWidth="140dip"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -31,7 +31,7 @@
             android:id="@+id/username"
             android:drawableLeft="@mipmap/email"
             android:hint="E-mail"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="#FFF"
             android:paddingLeft="0dp"
             android:drawablePadding="5dp"
@@ -63,7 +63,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Entrar"
         android:id="@+id/button"
         android:background="@drawable/selector_xml_btn_yellow"
@@ -86,12 +86,20 @@
         android:id="@+id/btn_fb_login"
         android:background="@mipmap/facebook"
         android:scaleType="fitXY"
-        android:layout_height="65dp"
-        android:layout_width="65dp"
-        android:maxWidth="150dip"
+        android:layout_height="80dp"
+        android:layout_width="80dp"
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
         android:onClick="checkLogin" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Cadastre-se!"
+        android:id="@+id/textCadastrar"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35dp"
+        android:textColor="#FFF"/>
 
 </LinearLayout>

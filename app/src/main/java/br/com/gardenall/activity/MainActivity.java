@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -154,7 +155,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void disconnect(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, R.style.AlertDialogCustom));
         builder.setIcon(R.drawable.ic_menu_manage);
         builder.setTitle(R.string.action_exit);
         builder.setMessage(R.string.action_sure_disconnect);
