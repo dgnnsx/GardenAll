@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#88b88a</color>
     <color name="colorPrimaryDark">#594544</color>
-    <color name="colorAccent">#8B4726</color>
+    <color name="colorAccent">#ffffff</color>
     <color name="control_highlight">#d4d4d4</color>
     <color name="error">#BD1644</color>
     <!-- Outras cores -->

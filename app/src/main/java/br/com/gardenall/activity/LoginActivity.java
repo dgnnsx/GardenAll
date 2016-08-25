@@ -34,8 +34,6 @@ public class LoginActivity extends AppCompatActivity {
             // Address the email and password field
             emailEditText = (EditText) findViewById(R.id.username);
             passEditText = (EditText) findViewById(R.id.password);
-            emailEditText.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
-            passEditText.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -46,11 +44,11 @@ public class LoginActivity extends AppCompatActivity {
             //Set error message for email field
             tilEmail.setError("E-mail inválido");
         }
-
+        TextInputLayout tilPass = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         final String pass = passEditText.getText().toString();
         if (!isValidPassword(pass)) {
             //Set error message for password field
-            passEditText.setError("Sua senha não pode ser vazia");
+            tilPass.setError("Sua senha não pode ser vazia");
         }
 
         // Validation Completed

@@ -6,13 +6,13 @@
         <!-- Variação escura da cor primária para a status bar e contextual app bars -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
-        <item name="colorAccent">@color/colorAccent</item>
         <!-- Cor para o efeito ripple -->
         <item name="colorControlHighlight">@color/control_highlight</item>
         <!-- Action Mode Overlay -->
         <item name="windowActionModeOverlay">true</item>
         <!-- Cor da action bar de contexto (CAB) -->
         <item name="actionModeBackground">@color/colorPrimary</item>
+        <item name="colorAccent">@color/background_floating_material_light</item>
     </style>
     <!-- Tema para o Nav Drawer -->
     <style name="AppTheme.NavDrawer" parent="AppTheme">
@@ -32,5 +32,15 @@
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/error</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">17sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
     </style>
 </resources>

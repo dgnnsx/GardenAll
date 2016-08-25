@@ -21,8 +21,8 @@
         android:id="@+id/text_input_layout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorTextAppearance="@style/error_appearance">
-
+        app:errorTextAppearance="@style/error_appearance"
+        android:theme="@style/TextLabel">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,9 @@
         android:id="@+id/text_input_layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorTextAppearance="@style/error_appearance">
+        android:textColor="#FFF"
+        app:errorTextAppearance="@style/error_appearance"
+        android:theme="@style/TextLabel">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
