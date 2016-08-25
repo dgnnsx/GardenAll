@@ -4,7 +4,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_disconnect">Desconectar</string>
+    
+    <string name="action_exit">Sair</string>
+    <string name="action_sure_disconnect">Tem certeza que quer se desconectar?</string>
+    <string name="negative">Não</string>
+    <string name="positive">Sim</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
