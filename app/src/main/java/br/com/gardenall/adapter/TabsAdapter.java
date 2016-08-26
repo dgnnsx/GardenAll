@@ -28,21 +28,23 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        /*Bundle args = new Bundle();
+        Bundle args = new Bundle();
         if(position == 0){
             args.putString("tab", "plantas");
-            Fragment f = new PlantasFragment();
+            Fragment f = new FragmentPlaceHolder();
             f.setArguments(args);
             return f;
         }
         else if(position == 1){
-            args.putString("tab", "alertas");
-            Fragment f = new AlertasFragment();
+            args.putString("tab", "atividades");
+            Fragment f = new FragmentPlaceHolder();
             f.setArguments(args);
             return f;
-        }*/
+        }
 
+        args.putString("tab", "favoritos");
         Fragment f = new FragmentPlaceHolder();
+        f.setArguments(args);
         return f;
     }
 
