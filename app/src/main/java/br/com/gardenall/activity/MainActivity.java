@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(){
         TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPlaceHolder(), "FRAG_1");
-        adapter.addFragment(new FragmentPlaceHolder(), "FRAG_2");
-        adapter.addFragment(new FragmentPlaceHolder(), "FRAG_3");
+        adapter.addFragment(new FragmentPlaceHolder(), "Plantas");
+        adapter.addFragment(new FragmentPlaceHolder(), "Atividades");
+        adapter.addFragment(new FragmentPlaceHolder(), "Favoritos");
         viewPager.setAdapter(adapter);
     }
 
