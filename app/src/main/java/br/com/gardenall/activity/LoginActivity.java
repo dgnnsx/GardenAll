@@ -1,14 +1,11 @@
 package br.com.gardenall.activity;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.com.gardenall.R;
 import br.com.gardenall.utils.Prefs;
@@ -29,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            setContentView(R.layout.activity_login_activity);
+            setContentView(R.layout.activity_login);
 
             // Address the email and password field
             emailEditText = (EditText) findViewById(R.id.username);
