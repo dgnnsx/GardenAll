@@ -1,0 +1,66 @@
+﻿{
+	"plantas": {
+		"planta": [
+		{
+		"nomePlanta": "Alface",
+		"urlPlanta": "https://lh6.googleusercontent.com/-n98QK-GK32A/TYke0cbz-pI/AAAAAAAAABU/-FWTG2nSPRM/s1600/alface-crespa.png"
+		},
+		{
+		"nomePlanta": "Agrião",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/barbarea_v001.jpg?itok=9g1gpX3z"
+		},
+		{
+		"nomePlanta": "Feijão",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/feijao001.jpg?itok=mI9H2g_Q"
+		},
+		{
+		"nomePlanta": "Louro",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/louro001.jpg?itok=mpE15HXQ"
+		},
+		{
+		"nomePlanta": "Cebola-do-Egito",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/cebolaegp001.jpg?itok=NHwNtwNp"
+		},
+		{
+		"nomePlanta": "Girassol",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/girassol001.jpg?itok=aoYqrDFO"
+		},
+		{
+		"nomePlanta": "Manjericão-sagrado",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/msagrado001.jpg?itok=uS_1J9qg"
+		},
+		{
+		"nomePlanta": "Açafrão",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/acafrao001.jpg?itok=7pKjJhgg"
+		},
+		{
+		"nomePlanta": "Oxalis (falso trevo)",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/oxalis001.jpg?itok=1OZ23HpI"
+		},
+		{
+		"nomePlanta": "Camomila",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/camomila001.jpg?itok=rQCN65OX"
+		},
+		{
+		"nomePlanta": "Arruda",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/arruda001.jpg?itok=BsJvvcFr"
+		},
+		{
+		"nomePlanta": "Pimenta-do-reino",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/pimentapreta0001.jpg?itok=JGj-yBJh"
+		},
+		{
+		"nomePlanta": "Jambu",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/jambu0001.jpg?itok=7hPdCo3I"
+		},
+		{
+		"nomePlanta": "Gengibre",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/gengibre001.jpg?itok=2h5iADj3"
+		},
+		{
+		"nomePlanta": "Sálvia",
+		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/salvia001.jpg?itok=zZ51PUA4"
+		}
+		]
+	}
+}
