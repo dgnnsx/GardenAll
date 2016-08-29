@@ -9,11 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.com.gardenall.R;
+import br.com.gardenall.adapter.PlantasAdapter;
 import br.com.gardenall.domain.Planta;
+import br.com.gardenall.domain.PlantaService;
 
 /**
  * Created by diego on 26/08/16.
@@ -35,7 +38,7 @@ public class PlantasFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // taskPlantas();
+        taskPlantas();
     }
 
     @Nullable
@@ -49,5 +52,22 @@ public class PlantasFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         return view;
+    }
+
+    private void taskPlantas(){
+        // Busca as plantas
+        this.plantas = PlantaService.getPlantas(getContext());
+        // Atualiza a lista
+        mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta()));
+    }
+
+    private PlantasAdapter.PlantaOnClickListener onClickPlanta(){
+        return new PlantasAdapter.PlantaOnClickListener(){
+            @Override
+            public void onClickPlanta(View view, int idx){
+                Planta planta = plantas.get(idx);
+                Toast.makeText(getContext(), planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 }

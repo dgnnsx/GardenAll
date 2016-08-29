@@ -3,7 +3,7 @@
     <color name="colorPrimary">#88b88a</color>
     <color name="colorPrimaryDark">#594544</color>
     <color name="colorAccent">#594544</color>
-    <color name="control_highlight">#d4d4d4</color>
+    <color name="control_highlight">#7CCD7C</color>
     <color name="error">#BD1644</color>
     <!-- Outras cores -->
     <color name="transparent">#0000</color>
@@ -13,6 +13,7 @@
     <color name="red">#f00</color>
     <color name="green">#0f0</color>
     <color name="gray">#eee</color>
+    <color name="dark_gray">#A9A9A9</color>
     <color name="refresh_progress_1">#33B5E5</color>
     <color name="refresh_progress_2">#99CC00</color>
     <color name="refresh_progress_3">#CC0000</color>

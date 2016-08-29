@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gardenall.fragment.FragmentPlaceHolder;
+import br.com.gardenall.fragment.PlantasFragment;
 
 public class TabsAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragments = new ArrayList<>();
@@ -31,7 +32,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         if(position == 0){
             args.putString("tab", "plantas");
-            Fragment f = new FragmentPlaceHolder();
+            Fragment f = new PlantasFragment();
             f.setArguments(args);
             return f;
         }

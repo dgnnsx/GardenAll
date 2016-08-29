@@ -11,6 +11,8 @@
     <string name="negative">Não</string>
     <string name="positive">Sim</string>
 
+    <string name="error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
