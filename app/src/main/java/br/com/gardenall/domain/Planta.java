@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Planta implements Parcelable {
-
     private String nomePlanta;
     private String urlImagem;
 
@@ -35,7 +34,6 @@ public class Planta implements Parcelable {
         setNomePlanta(parcel.readString());
         setUrlImagem(parcel.readString());
     }
-
 
     @Override
     public int describeContents() {

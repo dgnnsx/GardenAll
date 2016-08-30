@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gardenall.fragment.AtividadesFragment;
 import br.com.gardenall.fragment.FragmentPlaceHolder;
 import br.com.gardenall.fragment.PlantasFragment;
 
@@ -38,7 +39,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         }
         else if(position == 1){
             args.putString("tab", "atividades");
-            Fragment f = new FragmentPlaceHolder();
+            Fragment f = new AtividadesFragment();
             f.setArguments(args);
             return f;
         }

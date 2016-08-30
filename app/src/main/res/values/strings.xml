@@ -13,6 +13,9 @@
 
     <string name="error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
 
+    <string name="regar">Regar as plantas</string>
+    <string name="alert_regar">Suas plantas precisam de água. Cuide bem delas!</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

@@ -19,7 +19,6 @@ import java.util.List;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Planta;
-import br.com.gardenall.utils.NetworkUtils;
 
 public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHolder> {
     private final Context context;
@@ -34,7 +33,7 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_planta, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
