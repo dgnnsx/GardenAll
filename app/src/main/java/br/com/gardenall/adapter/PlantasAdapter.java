@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,11 +25,13 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
     private final Context context;
     private final List<Planta> plantas;
     private PlantaOnClickListener plantaOnClickListener;
+    private int tabIdentifier;
 
-    public PlantasAdapter(Context context, List<Planta> plantas, PlantaOnClickListener plantaOnClickListener){
+    public PlantasAdapter(Context context, List<Planta> plantas, PlantaOnClickListener plantaOnClickListener, int tabIdentifier){
         this.context = context;
         this.plantas = plantas;
         this.plantaOnClickListener = plantaOnClickListener;
+        this.tabIdentifier = tabIdentifier;
     }
 
     @Override
@@ -44,6 +47,11 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
         Planta planta = plantas.get(position);
         holder.nomePlanta.setText(planta.getNomePlanta());
         holder.progress.setVisibility(View.VISIBLE);
+
+        if(tabIdentifier == 0)
+            holder.favorite.setVisibility(View.GONE);
+        else
+            holder.favorite.setVisibility(View.VISIBLE);
 
         if(position == (plantas.size() - 1))
             holder.separador.setVisibility(View.GONE);
@@ -72,6 +80,13 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
                     plantaOnClickListener.onClickPlanta(holder.itemView, position);
                 }
             });
+
+            holder.favorite.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
+                @Override
+                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                    plantaOnClickListener.onClickFavorite(holder.favorite, position);
+                }
+            });
         }
     }
 
@@ -82,6 +97,7 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
 
     public interface PlantaOnClickListener{
         public void onClickPlanta(View view, int idx);
+        public void onClickFavorite(View view, int idx);
     }
 
     // ViewHolder com as views
@@ -90,13 +106,15 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
         ImageView image;
         ProgressBar progress;
         View separador;
+        MaterialFavoriteButton favorite;
 
         public ViewHolder(View view){
             super(view);
             nomePlanta = (TextView) view.findViewById(R.id.text1);
             image = (ImageView) view.findViewById(R.id.image);
             progress = (ProgressBar) view.findViewById(R.id.progress);
-            separador = (View) view.findViewById(R.id.view);
+            separador = view.findViewById(R.id.view);
+            favorite = (MaterialFavoriteButton) view.findViewById(R.id.favorite);
         }
     }
 }

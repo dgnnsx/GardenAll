@@ -1,5 +1,10 @@
 package br.com.gardenall.fragment;
 
+/**
+ * Created by diego on 26/08/16.
+ */
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,20 +23,17 @@ import br.com.gardenall.adapter.PlantasAdapter;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaService;
 
-/**
- * Created by diego on 26/08/16.
- */
 public class PlantasFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private List<Planta> plantas;
-    private String tabIdentifier;
+    private int tabIdentifier;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            this.tabIdentifier = getArguments().getString("tab");
+            this.tabIdentifier = getArguments().getInt("tab");
         }
     }
 
@@ -58,7 +60,7 @@ public class PlantasFragment extends Fragment {
         // Busca as plantas
         this.plantas = PlantaService.getPlantas(getContext());
         // Atualiza a lista
-        mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta()));
+        mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta(), tabIdentifier));
     }
 
     private PlantasAdapter.PlantaOnClickListener onClickPlanta(){
@@ -66,7 +68,21 @@ public class PlantasFragment extends Fragment {
             @Override
             public void onClickPlanta(View view, int idx){
                 Planta planta = plantas.get(idx);
-                Toast.makeText(getContext(), planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
+                if(tabIdentifier == 0) {
+                    Toast.makeText(getContext(), "0 " + planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "2 " + planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
+                    /*
+                    Intent intent = new Intent(getContext(), PlantaActivity.class);
+                    intent.putExtra("planta", planta);
+                    startActivity(intent);
+                    */
+                }
+            }
+
+            @Override
+            public void onClickFavorite(View view, int idx) {
+
             }
         };
     }
