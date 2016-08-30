@@ -12,7 +12,8 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="140dip"
+        android:maxWidth="120dip"
+        android:layout_marginTop="0dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -22,8 +23,13 @@
         android:id="@+id/text_input_layout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         app:errorTextAppearance="@style/error_appearance"
-        android:theme="@style/TextLabel">
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +38,7 @@
             android:id="@+id/username"
             android:drawableLeft="@mipmap/email"
             android:hint="E-mail"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:textColor="#FFF"
             android:paddingLeft="0dp"
             android:drawablePadding="5dp"
@@ -43,9 +49,13 @@
         android:id="@+id/text_input_layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFF"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         app:errorTextAppearance="@style/error_appearance"
-        android:theme="@style/TextLabel">
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,16 +71,21 @@
             android:textColorHint="#999"/>
     </android.support.design.widget.TextInputLayout>
 
+
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Entrar"
         android:id="@+id/button"
         android:background="@drawable/selector_xml_btn_yellow"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFF"
         android:onClick="checkLogin"/>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,16 +106,23 @@
         android:layout_width="80dp"
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:onClick="checkLogin" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Cadastre-se!"
-        android:id="@+id/textCadastrar"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="35dp"
-        android:textColor="#FFF"/>
+        android:cropToPadding="false"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Cadastre-se!"
+            android:id="@+id/textCadastrar"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:textColor="#FFF"/>
+    </RelativeLayout>
 
 </LinearLayout>
