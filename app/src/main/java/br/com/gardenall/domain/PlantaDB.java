@@ -28,6 +28,6 @@ public class PlantaDB extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
 
     // Insere uma nova planta, ou atualiza se já existe
-    
+
 
 }
