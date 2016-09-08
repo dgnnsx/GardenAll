@@ -5,7 +5,17 @@
           "titulo": "Regar as plantas",
           "subTitulo": "Suas plantas precisam de água. Cuide bem delas!",
           "horario": "08:00 PM"          
-      }
+      },
+        {
+          "titulo": "Regar as plantas",
+          "subTitulo": "Suas plantas precisam de água. Cuide bem delas!",
+          "horario": "08:00 PM"
+        },
+        {
+          "titulo": "Regar as plantas",
+          "subTitulo": "Suas plantas precisam de água. Cuide bem delas!",
+          "horario": "08:00 PM"
+        }
       ]
   }
 }

@@ -8,10 +8,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Planta implements Parcelable {
+    private long id;
     private String nomePlanta;
     private String urlImagem;
 
     public Planta(){}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getNomePlanta(){
         return nomePlanta;
@@ -31,6 +40,7 @@ public class Planta implements Parcelable {
 
     // Parcelable
     public Planta(Parcel parcel){
+        setId(parcel.readLong());
         setNomePlanta(parcel.readString());
         setUrlImagem(parcel.readString());
     }
@@ -42,6 +52,7 @@ public class Planta implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(getId());
         dest.writeString(getNomePlanta());
         dest.writeString(getUrlImagem());
     }

@@ -5,6 +5,7 @@
     <color name="colorAccent">#594544</color>
     <color name="control_highlight">#7CCD7C</color>
     <color name="error">#BD1644</color>
+    <color name="overlay">#80000000</color>
     <!-- Outras cores -->
     <color name="transparent">#0000</color>
     <color name="white">#fff</color>
@@ -19,4 +20,6 @@
     <color name="refresh_progress_2">#99CC00</color>
     <color name="refresh_progress_3">#CC0000</color>
     <color name="red_button">#CD5C5C</color>
+    <color name="orange">#FFA500</color>
+    <color name="colorLink">#1ea4f7</color>
 </resources>

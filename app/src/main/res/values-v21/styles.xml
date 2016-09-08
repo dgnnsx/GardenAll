@@ -6,13 +6,16 @@
         <!-- Variação escura da cor primária para a status bar e contextual app bars -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <!-- Cor para o efeito ripple -->
         <item name="colorControlHighlight">@color/control_highlight</item>
         <!-- Action Mode Overlay -->
         <item name="windowActionModeOverlay">true</item>
         <!-- Cor da action bar de contexto (CAB) -->
         <item name="actionModeBackground">@color/colorPrimary</item>
+        <!-- Usado para transições -->
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <!-- Tema para a tela inicial (Status Bar transparente) -->
@@ -28,6 +31,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
     <!-- Tema Material para a tela de configurações -->
     <style name="AppTheme.Material" parent="android:Theme.Material.Light.DarkActionBar">
         <!-- Cores -->
@@ -63,5 +67,13 @@
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorAccent">@color/black</item>
         <item name="colorAccent">@color/black</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 </resources>

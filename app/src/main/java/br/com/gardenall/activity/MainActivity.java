@@ -2,8 +2,11 @@ package br.com.gardenall.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,11 +18,12 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.TabsAdapter;
-import br.com.gardenall.fragment.FragmentPlaceHolder;
 import br.com.gardenall.utils.Prefs;
 
 public class MainActivity extends AppCompatActivity
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,30 +65,83 @@ public class MainActivity extends AppCompatActivity
         // Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if(viewPager != null && tabLayout != null) {
-            setupTabs(tabLayout);
+            tabLayout.setupWithViewPager(viewPager);
         }
 
         // ViewPagerChangeListener
         setupViewPagerListener();
 
+        // Floating Action Button
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         // Seleciona a tab salva pelo ViewPager
         int tabIdx = Prefs.getInteger(this, "tabIdx");
+        // Variável global
+        PlantasApplication.INDEX_OF_TAB = tabIdx;
+        setupFABOnClickListener();
         viewPager.setCurrentItem(tabIdx);
     }
 
     private void setupViewPager(){
         TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPlaceHolder(), "Plantas");
-        adapter.addFragment(new FragmentPlaceHolder(), "Atividades");
-        adapter.addFragment(new FragmentPlaceHolder(), "Favoritos");
+        adapter.addFragment(new Fragment(), "Plantas");
+        adapter.addFragment(new Fragment(), "Atividades");
+        adapter.addFragment(new Fragment(), "Favoritos");
         viewPager.setAdapter(adapter);
     }
 
-    private void setupTabs(TabLayout tabLayout){
-        int selectedColor = this.getResources().getColor(R.color.white);
-        int normalColor = this.getResources().getColor(R.color.gray);
-        tabLayout.setTabTextColors(normalColor, selectedColor);
-        tabLayout.setupWithViewPager(viewPager);
+    private void setupFABOnClickListener() {
+        int position = PlantasApplication.INDEX_OF_TAB;
+        switch (position) {
+            case 0:
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getBaseContext(), CatalogoActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                break;
+
+            case 1:
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getBaseContext(), "CLifdgfdgk", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+
+            default:
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Do nothing
+                    }
+                });
+                break;
+        }
+    }
+
+    private void setupFABAction() {
+        int position = PlantasApplication.INDEX_OF_TAB;
+        switch (position) {
+            case 0:
+                fab.hide();
+                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab.show();
+                break;
+
+            case 1:
+                fab.hide();
+                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                fab.show();
+                break;
+
+            default:
+                fab.hide();
+                break;
+        }
     }
 
     private void setupViewPagerListener(){
@@ -94,7 +152,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 // Salva o índice da página/tab selecionada
-                Prefs.setInteger(getBaseContext(), "tabIdx", viewPager.getCurrentItem());
+                Prefs.setInteger(getBaseContext(), "tabIdx", position);
+                PlantasApplication.INDEX_OF_TAB = position;
+                setupFABOnClickListener();
+                setupFABAction();
             }
 
             @Override

@@ -20,13 +20,9 @@ public class NetworkUtils {
             if (connectivity == null) {
                 return false;
             } else {
-                NetworkInfo[] info = connectivity.getAllNetworkInfo();
-                if (info != null) {
-                    for (int i = 0; i < info.length; i++) {
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                            return true;
-                        }
-                    }
+                NetworkInfo info = connectivity.getActiveNetworkInfo();
+                if (info != null && info.isConnected()) {
+                    return true;
                 }
             }
         } catch (SecurityException e) {

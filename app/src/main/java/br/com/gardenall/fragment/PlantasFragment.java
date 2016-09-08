@@ -4,7 +4,6 @@ package br.com.gardenall.fragment;
  * Created by diego on 26/08/16.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.gardenall.R;
@@ -58,9 +58,14 @@ public class PlantasFragment extends Fragment {
 
     private void taskPlantas(){
         // Busca as plantas
-        this.plantas = PlantaService.getPlantas(getContext());
-        // Atualiza a lista
-        mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta(), tabIdentifier));
+        try {
+            this.plantas = PlantaService.getPlantas(getContext(), true);
+            // Atualiza a lista
+            mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta(), tabIdentifier));
+        }
+        catch (IOException e) {
+            Toast.makeText(getContext(), "Erro ao ler dados.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private PlantasAdapter.PlantaOnClickListener onClickPlanta(){

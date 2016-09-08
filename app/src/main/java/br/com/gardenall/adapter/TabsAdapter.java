@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gardenall.fragment.AtividadesFragment;
-import br.com.gardenall.fragment.FragmentPlaceHolder;
 import br.com.gardenall.fragment.PlantasFragment;
 
 public class TabsAdapter extends FragmentPagerAdapter {

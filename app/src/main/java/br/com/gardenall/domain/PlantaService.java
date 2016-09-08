@@ -21,15 +21,53 @@ import br.com.gardenall.utils.FileUtils;
 public class PlantaService {
     public static final String TAG = "PlantaService";
 
-    public static List<Planta> getPlantas(Context context){
-        try{
-            String json = FileUtils.readRawFileString(context, R.raw.plantas, "UTF-8");
-            List<Planta> plantas = parserJSON(context, json);
-            return plantas;
+    public static List<Planta> getPlantas(Context context, boolean refresh) throws IOException {
+        List<Planta> plantas = null;
+        boolean searchInDB = !refresh;
+        if(searchInDB) {
+            // Busca no banco de dados
+            plantas = getPlantasFromDB(context);
+            if(plantas != null && plantas.size() > 0) {
+                // Retorna as plantas encontradas no banco
+                return plantas;
+            }
         }
-        catch(Exception e){
-            Log.e(TAG, "Erro ao ler dados: " +e.getMessage(), e);
-            return null;
+        // Se não encontrar, busca na web
+        plantas = getPlantasFromWeb(context);
+        return plantas;
+    }
+
+    private static List<Planta> getPlantasFromDB(Context context) throws IOException {
+        PlantaDB db = new PlantaDB(context);
+        try {
+            List<Planta> plantas = db.findAll();
+            return plantas;
+        } finally {
+            db.close();
+        }
+    }
+
+    private static List<Planta> getPlantasFromWeb(Context context) throws IOException {
+        String json = FileUtils.readRawFileString(context, R.raw.plantas, "UTF-8");
+        List<Planta> plantas = parserJSON(context, json);
+        // Depois de buscar, salva as plantas
+        savePlantas(context, plantas);
+        return plantas;
+    }
+
+    // Salva as plantas no banco de dados interno
+    private static void savePlantas(Context context, List<Planta> plantas) {
+        PlantaDB db = new PlantaDB(context);
+        try {
+            // Deleta as plantas antigas para limpar o banco
+            db.deleteAll();
+            // Salva todas as plantas
+            for(Planta planta : plantas) {
+                // p.tipo = tipo;
+                db.insert(planta);
+            }
+        } finally {
+            db.close();
         }
     }
 

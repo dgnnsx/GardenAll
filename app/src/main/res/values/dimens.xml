@@ -7,4 +7,12 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_avatar_size">60dp</dimen>
+    <dimen name="gridView_cellWidth">150dp</dimen>
+    <dimen name="gridView_cellHeight">150dp</dimen>
+    <dimen name="cellText_padding">5dp</dimen>
+    <dimen name="elementMargin">10dp</dimen>
+    <dimen name="cellText_textSize">18sp</dimen>
+    <dimen name="grid_spacing">3dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
 </resources>
