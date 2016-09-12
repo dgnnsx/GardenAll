@@ -4,80 +4,86 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:clickable="true"
-    android:background="?attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <FrameLayout
-            android:layout_width="@dimen/list_item_avatar_size"
-            android:layout_height="@dimen/list_item_avatar_size"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp">
-
-            <!-- Foto da planta -->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <!-- Barra de progresso enquanto carrega a foto -->
-            <ProgressBar
-                android:id="@+id/progress"
-                style="@android:style/Widget.ProgressBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical"
-                android:gravity="center|center_vertical"
-                android:visibility="gone" />
-        </FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-            <TextView
-                android:id="@+id/text1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            <FrameLayout
+                android:layout_width="@dimen/list_item_avatar_size"
+                android:layout_height="@dimen/list_item_avatar_size"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
 
-            <TextView
-                android:id="@+id/text2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="planta"/>
+                <!-- Foto da planta -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <!-- Barra de progresso enquanto carrega a foto -->
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_vertical"
+                    android:gravity="center|center_vertical"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="planta"/>
+            </LinearLayout>
+
+            <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                android:id="@+id/favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:mfb_animate_favorite="true"
+                app:mfb_animate_unfavorite="false"
+                app:mfb_padding="12"
+                app:mfb_rotation_duration="400"
+                app:mfb_rotation_angle="360"
+                app:mfb_bounce_duration="300"
+                app:mfb_color="black"
+                app:mfb_type="star"/>
         </LinearLayout>
 
-        <com.github.ivbaranov.mfb.MaterialFavoriteButton
-            android:id="@+id/favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:mfb_animate_favorite="true"
-            app:mfb_animate_unfavorite="false"
-            app:mfb_padding="12"
-            app:mfb_rotation_duration="400"
-            app:mfb_rotation_angle="360"
-            app:mfb_bounce_duration="300"
-            app:mfb_color="black"
-            app:mfb_type="star"/>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/gray"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:background="@color/gray"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
 </LinearLayout>

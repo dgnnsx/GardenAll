@@ -59,7 +59,7 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
             holder.separador.setVisibility(View.VISIBLE);
 
         // Faz o download da foto e mostra o ProgressBar
-        Picasso.with(context).load(planta.getUrlImagem()).fit().into(holder.image,
+        Picasso.with(context).load(planta.getUrlImagem()).noFade().into(holder.image,
                 new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
@@ -74,12 +74,31 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
 
         // Click
         if(plantaOnClickListener != null){
+            // Click normal
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     plantaOnClickListener.onClickPlanta(holder.itemView, position);
                 }
             });
+
+            // Click longo
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    plantaOnClickListener.onLongCLickPlanta(holder.itemView, position);
+                    return true;
+                }
+            });
+
+            // Pinta o fundo de verde se a linha estiver selecionada
+            int corFundo = context.getResources().getColor(planta.getSelected() == 1
+                    ? R.color.colorCAB : R.color.white);
+            holder.itemView.setBackgroundColor(corFundo);
+            // A cor do texto é branca ou verde, depende da cor do fundo.
+            int corFonte = context.getResources().getColor(planta.getSelected() == 1
+                    ? R.color.white : R.color.black);
+            holder.nomePlanta.setTextColor(corFonte);
 
             holder.favorite.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
                 @Override
@@ -97,6 +116,7 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
 
     public interface PlantaOnClickListener{
         public void onClickPlanta(View view, int idx);
+        public void onLongCLickPlanta(View view, int idx);
         public void onClickFavorite(View view, int idx);
     }
 

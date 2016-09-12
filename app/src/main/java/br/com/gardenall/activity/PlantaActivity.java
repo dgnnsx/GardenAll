@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Planta;
+import br.com.gardenall.domain.PlantaDB;
+import br.com.gardenall.domain.PlantaService;
 
 public class PlantaActivity extends AppCompatActivity {
     private boolean isUsingTransition = false;
@@ -67,7 +69,15 @@ public class PlantaActivity extends AppCompatActivity {
         return new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "AEHO", Toast.LENGTH_SHORT).show();
+                Planta p;
+                PlantaDB db = new PlantaDB(getBaseContext());
+                p = db.findByNome(planta.getNomePlanta());
+                if(p == null) {
+                    PlantaService.savePlanta(getBaseContext(), planta);
+                    Toast.makeText(getBaseContext(), "Planta salva com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Planta já salva na lista do usuário!", Toast.LENGTH_SHORT).show();
+                }
             }
         };
     }

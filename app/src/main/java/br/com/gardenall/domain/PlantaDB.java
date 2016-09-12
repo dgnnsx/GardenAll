@@ -13,8 +13,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlantaDB extends SQLiteOpenHelper{
+public class PlantaDB extends SQLiteOpenHelper {
     private static final String NOME_BANCO = "plantas.sqlite";
+    private static final String CATALOGO_DB = "catalogo";
+    private static final String PLANTA_DB = "planta";
     private static final int VERSAO_BANCO = 1;
 
     public PlantaDB(Context context) {
@@ -24,18 +26,42 @@ public class PlantaDB extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists planta (_id integer primary key " +
+        db.execSQL("create table if not exists catalogo (_id integer primary key " +
             "autoincrement, nomePlanta text, urlImagem text);");
+
+        db.execSQL("create table if not exists planta (_id integer primary key " +
+                "autoincrement, nomePlanta text, urlImagem text);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("drop table planta;");
+        db.execSQL("drop table if exists catalogo;");
+        db.execSQL("drop table if exists planta;");
         onCreate(db);
     }
 
-    // Insere uma nova planta, ou atualiza se já existe
+    // Insere uma nova planta na lista do usuario, ou atualiza se já existe
     public long insert(Planta planta) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("nomePlanta", planta.getNomePlanta());
+            values.put("urlImagem", planta.getUrlImagem());
+            // update planta set values = ... where _id=?
+            int id = (int) db.insertWithOnConflict(PLANTA_DB, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            if(id == -1) {
+                String _id = String.valueOf(planta.getId());
+                String[] whereArgs = new String[]{_id};
+                db.update(PLANTA_DB, values, "_id=?", whereArgs);
+            }
+            return id;
+        } finally {
+            db.close();
+        }
+    }
+
+    // Insere uma nova planta no catalogo, ou atualiza se já existe
+    public long insertCatalogo(Planta planta) {
         long id = planta.getId();
         SQLiteDatabase db = getWritableDatabase();
         try {
@@ -47,11 +73,11 @@ public class PlantaDB extends SQLiteOpenHelper{
                 String _id = String.valueOf(planta.getId());
                 String[] whereArgs = new String[]{_id};
                 // update planta set values = ... where _id=?
-                int count = db.update("planta", values, "_id=?", whereArgs);
+                int count = db.update(CATALOGO_DB, values, "_id=?", whereArgs);
                 return count;
             } else {
                 // insert into planta values (...)
-                id = db.insert("planta", "", values);
+                id = db.insert(CATALOGO_DB, "", values);
                 return id;
             }
         } finally {
@@ -64,24 +90,43 @@ public class PlantaDB extends SQLiteOpenHelper{
         SQLiteDatabase db = getWritableDatabase();
         try {
             // delete from planta where _id=?
-            int count = db.delete("planta", "_id=?", new String[]{String.valueOf(planta.getId())});
+            int count = db.delete(PLANTA_DB, "_id=?", new String[]{String.valueOf(planta.getId())});
             return count;
         } finally {
             db.close();
         }
     }
 
-    // Deleta todas plantas
+    // Deleta todas plantas da lista do usuario
     public void deleteAll() {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("planta", null, null);
+        db.delete(PLANTA_DB, null, null);
     }
 
+    // Deleta todas plantas do catalogo
+    public void deleteAllCatalogo() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(CATALOGO_DB, null, null);
+    }
+
+    // Lista todas plantas do catalogo
     public List<Planta> findAll() {
         SQLiteDatabase db = getWritableDatabase();
         try {
             // select * from planta
-            Cursor c = db.query("planta", null, null, null, null, null, "nomePlanta ASC");
+            Cursor c = db.query(PLANTA_DB, null, null, null, null, null, "nomePlanta ASC");
+            return toList(c);
+        } finally {
+            db.close();
+        }
+    }
+
+    // Lista todas plantas do catalogo
+    public List<Planta> findAllCatalogo() {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            // select * from catalogo
+            Cursor c = db.query(CATALOGO_DB, null, null, null, null, null, "nomePlanta ASC");
             return toList(c);
         } finally {
             db.close();
@@ -93,7 +138,7 @@ public class PlantaDB extends SQLiteOpenHelper{
         SQLiteDatabase db = getWritableDatabase();
         try {
             // select * from planta
-            Cursor c = db.query("planta", null, "nomePlanta = ?", new String[]{nome}, null, null, null, null);
+            Cursor c = db.query(PLANTA_DB, null, "nomePlanta = ?", new String[]{nome}, null, null, null, null);
             if(c.moveToFirst()) {
                 Planta planta = new Planta();
                 read(c, planta);

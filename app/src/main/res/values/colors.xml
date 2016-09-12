@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#88b88a</color>
-    <color name="colorPrimaryDark">#594544</color>
-    <color name="colorAccent">#594544</color>
-    <color name="control_highlight">#7CCD7C</color>
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#689F38</color>
+    <color name="colorAccent">#FFEB3B</color>
+    <color name="control_highlight">#DCEDC8</color>
     <color name="error">#BD1644</color>
     <color name="overlay">#80000000</color>
     <!-- Outras cores -->
@@ -22,4 +22,5 @@
     <color name="red_button">#CD5C5C</color>
     <color name="orange">#FFA500</color>
     <color name="colorLink">#1ea4f7</color>
+    <color name="colorCAB">#AED581</color>
 </resources>

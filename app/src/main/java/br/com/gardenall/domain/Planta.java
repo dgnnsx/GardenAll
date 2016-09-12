@@ -11,6 +11,7 @@ public class Planta implements Parcelable {
     private long id;
     private String nomePlanta;
     private String urlImagem;
+    private int selected;
 
     public Planta(){}
 
@@ -30,12 +31,27 @@ public class Planta implements Parcelable {
         this.nomePlanta = nomePlanta;
     }
 
-    public String getUrlImagem(){
+    public String getUrlImagem() {
         return urlImagem;
     }
 
-    public void setUrlImagem(String urlImagem){
+    public void setUrlImagem(String urlImagem) {
         this.urlImagem = urlImagem;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
+    public void invertSelected() {
+        if(selected == 0)
+            selected = 1;
+        else
+            selected = 0;
     }
 
     // Parcelable
@@ -43,6 +59,7 @@ public class Planta implements Parcelable {
         setId(parcel.readLong());
         setNomePlanta(parcel.readString());
         setUrlImagem(parcel.readString());
+
     }
 
     @Override

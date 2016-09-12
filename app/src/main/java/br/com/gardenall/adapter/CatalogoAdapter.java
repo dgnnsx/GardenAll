@@ -70,6 +70,7 @@ public class CatalogoAdapter extends BaseAdapter {
             Planta planta = plantas.get(position);
             holder.nomePlanta.setText(planta.getNomePlanta());
             holder.progress.setVisibility(View.VISIBLE);
+            holder.favorite.setFavorite(holder.favorite.isFavorite());
 
             // Faz o download da foto e mostra o ProgressBar
             Picasso.with(context).load(planta.getUrlImagem()).noFade().into(holder.image,
@@ -89,9 +90,9 @@ public class CatalogoAdapter extends BaseAdapter {
                 @Override
                 public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
                     if(holder.favorite.isFavorite())
-                        Toast.makeText(context, "FAVORITO", Toast.LENGTH_SHORT).show();
+                        holder.favorite.setFavorite(true);
                     else
-                        Toast.makeText(context, "N-FAVORITO", Toast.LENGTH_SHORT).show();
+                        holder.favorite.setFavorite(false);
                 }
             });
         }

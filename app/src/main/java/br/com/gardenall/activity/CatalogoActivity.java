@@ -76,9 +76,10 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
     private void taskPlantas(boolean refresh){
         // Busca as plantas
         try {
-            this.plantas = PlantaService.getPlantas(this, refresh);
+            this.plantas = PlantaService.getCatalogoDePlantas(this, refresh);
             // Atualiza a lista
             gridView.setAdapter(new CatalogoAdapter(this, plantas));
+            // ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
         }
         catch (IOException e) {
             Toast.makeText(getBaseContext(), "Erro ao ler dados.", Toast.LENGTH_SHORT).show();

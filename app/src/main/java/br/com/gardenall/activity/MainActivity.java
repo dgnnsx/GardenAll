@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
     private FloatingActionButton fab;
+    private TabsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,21 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                this,                               /* host Activity */
+                drawerLayout,                       /* DrawerLayout object */
+                toolbar,                            /* nav drawer image to replace 'Up' caret */
+                R.string.navigation_drawer_open,    /* "open drawer" description for accessibility */
+                R.string.navigation_drawer_close    /* "close drawer" description for accessibility */
+
+        ){
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                PlantasApplication.finishActionMode();
+                super.onDrawerStateChanged(newState);
+            }
+        };
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -83,7 +96,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupViewPager(){
-        TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
+        adapter = new TabsAdapter(getSupportFragmentManager());
         adapter.addFragment(new Fragment(), "Plantas");
         adapter.addFragment(new Fragment(), "Atividades");
         adapter.addFragment(new Fragment(), "Favoritos");
@@ -127,14 +140,12 @@ public class MainActivity extends AppCompatActivity
         int position = PlantasApplication.INDEX_OF_TAB;
         switch (position) {
             case 0:
-                fab.hide();
-                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab.show();
                 break;
 
             case 1:
-                fab.hide();
-                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLink)));
                 fab.show();
                 break;
 
@@ -151,6 +162,9 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
+                if(position != 0) {
+                    PlantasApplication.finishActionMode();
+                }
                 // Salva o índice da página/tab selecionada
                 Prefs.setInteger(getBaseContext(), "tabIdx", position);
                 PlantasApplication.INDEX_OF_TAB = position;
