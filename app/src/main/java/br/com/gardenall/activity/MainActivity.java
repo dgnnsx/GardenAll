@@ -24,6 +24,8 @@ import android.widget.Toast;
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.TabsAdapter;
+import br.com.gardenall.domain.SQLiteHandler;
+import br.com.gardenall.domain.SessionManager;
 import br.com.gardenall.utils.Prefs;
 
 public class MainActivity extends AppCompatActivity
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
     private FloatingActionButton fab;
     private TabsAdapter adapter;
+    private SQLiteHandler db;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,16 @@ public class MainActivity extends AppCompatActivity
         PlantasApplication.INDEX_OF_TAB = tabIdx;
         setupFABOnClickListener();
         viewPager.setCurrentItem(tabIdx);
+
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            disconnect();
+        }
     }
 
     private void setupViewPager(){
@@ -247,6 +261,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Prefs.setBoolean(getBaseContext(), "login", false);
+                session.setLogin(false);
+                db.deleteUsers();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
