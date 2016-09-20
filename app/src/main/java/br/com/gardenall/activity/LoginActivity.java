@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
+                            "Digite todos os campos, por favor.", Toast.LENGTH_LONG)
                             .show();
                 }
             }
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("Logging in ...");
+        pDialog.setMessage("Entrando...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                Log.i("Login Response: ", response.toString());
+                Log.i("Response: ", response.toString());
                 hideDialog();
 
                 try {
@@ -124,8 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                        String created_at = user.getString("created_at");
 
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);

@@ -78,7 +78,7 @@ public class SignupActivity extends Activity {
                     registerUser(name, email, password);
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Please enter your details!", Toast.LENGTH_LONG)
+                            "Por favor, digite suas informações!", Toast.LENGTH_LONG)
                             .show();
                 }
             }
@@ -99,7 +99,7 @@ public class SignupActivity extends Activity {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registering ...");
+        pDialog.setMessage("Registrando...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -127,12 +127,12 @@ public class SignupActivity extends Activity {
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
 
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Usuário registrado com sucesso!", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
                         Intent intent = new Intent(
                                 SignupActivity.this,
-                                LoginActivity.class);
+                                MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

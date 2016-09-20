@@ -13,11 +13,21 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@mipmap/logotipo"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
+        <TextView android:id="@+id/topo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Cadastre-se"
+            android:gravity="center"
+            android:textSize="30dip"/>
+
+        <TextView android:id="@+id/topo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal" />
+            android:text="Precisamos de algumas informações, é pra sua segurança."
+            android:gravity="center"
+            android:textSize="14dip"/>
 
         <EditText
             android:id="@+id/input_name"
@@ -57,13 +67,13 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Create Account"/>
+            android:text="Criar conta"/>
 
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
+            android:text="Já é um membro? Faça o login :)"
             android:gravity="center"
             android:textSize="16dip"/>
 
