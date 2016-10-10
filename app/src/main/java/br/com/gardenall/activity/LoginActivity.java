@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -107,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.i("Response: ", response.toString());
                 hideDialog();
-
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
@@ -131,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
+                                WelcomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

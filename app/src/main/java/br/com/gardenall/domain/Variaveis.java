@@ -12,4 +12,5 @@ public class Variaveis {
     // Server user login url
     public static String URL_LOGIN = "http://gardenall.esy.es/login.php";
     public static String URL_REGISTER = "http://gardenall.esy.es/register.php";
+    public static String URL_LIST_PLANTS = "http://gardenall.esy.es/listarPlantas.php";
 }

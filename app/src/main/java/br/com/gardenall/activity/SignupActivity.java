@@ -20,11 +20,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.AppController;
+import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.SQLiteHandler;
 import br.com.gardenall.domain.SessionManager;
 import br.com.gardenall.domain.Variaveis;
@@ -63,7 +66,7 @@ public class SignupActivity extends Activity {
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(SignupActivity.this,
-                    MainActivity.class);
+                    WelcomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -132,7 +135,7 @@ public class SignupActivity extends Activity {
                         // Launch login activity
                         Intent intent = new Intent(
                                 SignupActivity.this,
-                                MainActivity.class);
+                                WelcomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

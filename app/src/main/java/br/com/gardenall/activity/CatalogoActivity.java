@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +26,28 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.CatalogoAdapter;
 import br.com.gardenall.adapter.PlantasAdapter;
+import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaService;
+import br.com.gardenall.domain.SQLiteHandler;
+import br.com.gardenall.domain.Variaveis;
 import br.com.gardenall.utils.NetworkUtils;
 
 public class CatalogoActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -40,6 +55,7 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
     private Toolbar toolbar;
     private List<Planta> plantas;
     private GridView gridView;
+    private SQLiteHandler db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,14 +92,21 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
     private void taskPlantas(boolean refresh){
         // Busca as plantas
         try {
-            this.plantas = PlantaService.getCatalogoDePlantas(this, refresh);
-            // Atualiza a lista
-            gridView.setAdapter(new CatalogoAdapter(this, plantas));
-            // ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
+            PlantaService.getCatalogoDePlantas(this, refresh, new CatalogoCallback() {
+                @Override
+                public void onSuccess(List<Planta> p) {
+                    // ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
+                    gridView.setAdapter(new CatalogoAdapter(getApplicationContext(), p));
+                }
+            });
         }
         catch (IOException e) {
             Toast.makeText(getBaseContext(), "Erro ao ler dados.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public interface CatalogoCallback{
+        void onSuccess(List<Planta> p);
     }
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
