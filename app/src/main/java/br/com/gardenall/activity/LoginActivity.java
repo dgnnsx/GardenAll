@@ -41,19 +41,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_2);
-        ButterKnife.inject(this);
-
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-
-        // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
 
         // Session manager
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager(LoginActivity.this);
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
@@ -62,6 +52,16 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        setContentView(R.layout.activity_login_2);
+        ButterKnife.inject(this);
+
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 

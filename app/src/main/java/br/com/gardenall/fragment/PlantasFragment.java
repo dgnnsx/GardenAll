@@ -20,14 +20,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
+import br.com.gardenall.activity.PlantaActivity;
 import br.com.gardenall.adapter.PlantasAdapter;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
@@ -36,8 +37,9 @@ import br.com.gardenall.domain.PlantaService;
 public class PlantasFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mRecyclerView;
+    protected TextView textView;
     private LinearLayoutManager mLayoutManager;
-    private List<Planta> plantas;
+    private ArrayList<Planta> plantas, plantasAux;
     private int tabIdentifier;
 
     @Override
@@ -87,8 +89,8 @@ public class PlantasFragment extends Fragment {
                 if(PlantasApplication.ACTION_MODE == null) { // Se o fragment não estiver no Action Mode
                     // Valida se existe conexão ao fazer o gesto Pull to Refresh
                     //if(NetworkUtils.isNetworkAvailable(getContext())){
-                        taskPlantas(true);
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    taskPlantas(true);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     /*} else{
                         mSwipeRefreshLayout.setRefreshing(false);
                         android.support.design.widget.Snackbar.make(view, R.string.error_conexao_indisponivel,
@@ -114,7 +116,11 @@ public class PlantasFragment extends Fragment {
     private void taskPlantas(boolean refresh){
         // Busca as plantas
         try {
-            this.plantas = PlantaService.getPlantas(getContext(), refresh);
+            if(tabIdentifier == 0)
+                this.plantas = PlantaService.getPlantas(getContext(), refresh);
+            else {
+                this.plantas = PlantaService.getFavorites(getContext());
+            }
             // Atualiza a lista
             mRecyclerView.setAdapter(new PlantasAdapter(getContext(), plantas, onClickPlanta(), tabIdentifier));
         }
@@ -130,7 +136,9 @@ public class PlantasFragment extends Fragment {
                 Planta planta = plantas.get(idx);
                 if(tabIdentifier == 0) {
                     if(PlantasApplication.ACTION_MODE == null) {
-                        Toast.makeText(getContext(), "0 " + planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), PlantaActivity.class);
+                        intent.putExtra("planta", planta);
+                        startActivity(intent);
                     }
                     else { // Se a CAB estiver ativada
                         // Seleciona a planta
@@ -141,41 +149,38 @@ public class PlantasFragment extends Fragment {
                         mRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 } else {
-                    Toast.makeText(getContext(), "2 " + planta.getNomePlanta(), Toast.LENGTH_SHORT).show();
-                    /*
                     Intent intent = new Intent(getContext(), PlantaActivity.class);
                     intent.putExtra("planta", planta);
                     startActivity(intent);
-                    */
                 }
             }
 
             @Override
             public void onLongCLickPlanta(View view, int idx) {
                 Planta planta = plantas.get(idx);
+                if(tabIdentifier == 0) {
+                    if (PlantasApplication.ACTION_MODE != null) { // Se a CAB estiver ativada
+                        // Seleciona a planta
+                        planta.invertSelected();
+                        // Atualiza o título com a quantidade de plantas selecionadas
+                        updateActionModeTitle();
+                        // Redesenha a lista
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
+                        return;
+                    }
 
-                if(PlantasApplication.ACTION_MODE != null) { // Se a CAB estiver ativada
-                    // Seleciona a planta
-                    planta.invertSelected();
-                    // Atualiza o título com a quantidade de plantas selecionadas
-                    updateActionModeTitle();
-                    // Redesenha a lista
+                    // Liga a action bar de contexto (CAB)
+                    PlantasApplication.ACTION_MODE = getActivity().startActionMode(getActionModeCallback());
+                    planta.setSelected(1); // Seleciona a planta
+                    // Solicita ao Android para desenhar na lista novamente
                     mRecyclerView.getAdapter().notifyDataSetChanged();
-                    return;
+                    // Atualiza o título para mostrar a quantidade de plantas selecionadas
+                    updateActionModeTitle();
+                } else {
+                    Intent intent = new Intent(getContext(), PlantaActivity.class);
+                    intent.putExtra("planta", planta);
+                    startActivity(intent);
                 }
-
-                // Liga a action bar de contexto (CAB)
-                PlantasApplication.ACTION_MODE = getActivity().startActionMode(getActionModeCallback());
-                planta.setSelected(1); // Seleciona a planta
-                // Solicita ao Android para desenhar na lista novamente
-                mRecyclerView.getAdapter().notifyDataSetChanged();
-                // Atualiza o título para mostrar a quantidade de plantas selecionadas
-                updateActionModeTitle();
-            }
-
-            @Override
-            public void onClickFavorite(View view, int idx) {
-
             }
         };
     }
@@ -197,7 +202,7 @@ public class PlantasFragment extends Fragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                List<Planta> selectedPlantas = getSelectedPlantas();
+                ArrayList<Planta> selectedPlantas = getSelectedPlantas();
                 if(item.getItemId() == R.id.action_remove){
                     PlantaDB db = new PlantaDB(getContext());
                     try{
@@ -232,6 +237,7 @@ public class PlantasFragment extends Fragment {
                     }
                 }
                 // Encerra o action mode
+                mRecyclerView.getAdapter().notifyDataSetChanged();
                 mode.finish();
                 return true;
             }
@@ -254,7 +260,7 @@ public class PlantasFragment extends Fragment {
         if(PlantasApplication.ACTION_MODE != null) {
             PlantasApplication.ACTION_MODE.setTitle("Selecione as plantas");
             PlantasApplication.ACTION_MODE.setSubtitle(null);
-            List<Planta> selectedPlantas = getSelectedPlantas();
+            ArrayList<Planta> selectedPlantas = getSelectedPlantas();
             if(selectedPlantas.size() == 1) {
                 PlantasApplication.ACTION_MODE.setSubtitle("1 planta selecionada");
             } else if(selectedPlantas.size() > 1) {
@@ -266,8 +272,8 @@ public class PlantasFragment extends Fragment {
     }
 
     // Retorna a lista de plantas selecionadas
-    private List<Planta> getSelectedPlantas() {
-        List<Planta> list = new ArrayList<>();
+    private ArrayList<Planta> getSelectedPlantas() {
+        ArrayList<Planta> list = new ArrayList<>();
         for(Planta p : plantas) {
             if(p.getSelected() == 1) {
                 list.add(p);

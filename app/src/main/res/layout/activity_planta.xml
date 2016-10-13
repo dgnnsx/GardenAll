@@ -37,7 +37,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin">
+
+                <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    app:mfb_animate_favorite="true"
+                    app:mfb_animate_unfavorite="false"
+                    app:mfb_padding="12"
+                    app:mfb_rotation_duration="400"
+                    app:mfb_rotation_angle="360"
+                    app:mfb_bounce_duration="300"
+                    app:mfb_color="white"
+                    app:mfb_type="star"/>
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

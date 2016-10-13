@@ -11,11 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.squareup.picasso.Picasso;
 
 import br.com.gardenall.R;
@@ -27,7 +29,8 @@ public class PlantaActivity extends AppCompatActivity {
     private boolean isUsingTransition = false;
     private FloatingActionButton fab;
     private ImageView image;
-    private Planta planta;
+    private Planta planta, p;
+    private MaterialFavoriteButton favorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +64,38 @@ public class PlantaActivity extends AppCompatActivity {
 
         image = (ImageView) findViewById(R.id.backdrop);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        favorite = (MaterialFavoriteButton) findViewById(R.id.favorite);
         fab.setOnClickListener(onClickFab());
+        PlantaDB db = new PlantaDB(getBaseContext());
+        p = db.findByNomeOnCatalogo(planta.getNomePlanta());
+        if(p.getFavorito() == 1)
+            favorite.setFavorite(true);
+        else
+            favorite.setFavorite(false);
+        favorite.setOnFavoriteChangeListener(onFavoriteChange());
         loadItem();
+    }
+
+    private MaterialFavoriteButton.OnFavoriteChangeListener onFavoriteChange() {
+        return new MaterialFavoriteButton.OnFavoriteChangeListener() {
+            @Override
+            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                PlantaDB db = new PlantaDB(getBaseContext());
+                if(favorite) {
+                    planta.setFavorito(1);
+                    db.updateFavorito(planta);
+                } else {
+                    planta.setFavorito(0);
+                    db.updateFavorito(planta);
+                }
+            }
+        };
     }
 
     private FloatingActionButton.OnClickListener onClickFab() {
         return new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Planta p;
                 PlantaDB db = new PlantaDB(getBaseContext());
                 p = db.findByNome(planta.getNomePlanta());
                 if(p == null) {

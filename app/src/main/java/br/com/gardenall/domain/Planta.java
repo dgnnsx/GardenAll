@@ -1,16 +1,16 @@
 package br.com.gardenall.domain;
 
-/**
- * Created by diego on 26/08/16.
- */
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Created by diego on 26/08/16.
+ */
 public class Planta implements Parcelable {
     private long id;
     private String nomePlanta;
     private String urlImagem;
+    private int favorito;
     private int selected;
 
     public Planta(){}
@@ -54,12 +54,19 @@ public class Planta implements Parcelable {
             selected = 0;
     }
 
+    public void setFavorito(int favorito) {
+        this.favorito = favorito;
+    }
+
+    public int getFavorito() {
+        return favorito;
+    }
+
     // Parcelable
     public Planta(Parcel parcel){
         setId(parcel.readLong());
         setNomePlanta(parcel.readString());
         setUrlImagem(parcel.readString());
-
     }
 
     @Override

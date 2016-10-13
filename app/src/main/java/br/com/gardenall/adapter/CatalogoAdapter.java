@@ -12,22 +12,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Planta;
 
 public class CatalogoAdapter extends BaseAdapter {
     private final Context context;
-    private List<Planta> plantas;
+    private static ArrayList<Planta> plantas;
     private LayoutInflater mLayoutInflater;
 
-    public CatalogoAdapter(Context context, List<Planta> plantas) {
+    public CatalogoAdapter(Context context, ArrayList<Planta> plantas) {
         this.context = context;
         this.plantas = plantas;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,6 +50,7 @@ public class CatalogoAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         final ViewHolder holder;
+        final Planta planta = plantas.get(position);
 
         if (view == null) {
             holder = new ViewHolder();
@@ -59,18 +58,15 @@ public class CatalogoAdapter extends BaseAdapter {
             holder.nomePlanta = (TextView) view.findViewById(R.id.textCatalog);
             holder.image = (ImageView) view.findViewById(R.id.imageCatalog);
             holder.progress = (ProgressBar) view.findViewById(R.id.progressCatalog);
-            holder.favorite = (MaterialFavoriteButton) view.findViewById(R.id.favoriteCatalog);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
         // Muda o conteúdo
-        if (plantas.get(position) != null) {
-            Planta planta = plantas.get(position);
+        if (planta != null) {
             holder.nomePlanta.setText(planta.getNomePlanta());
             holder.progress.setVisibility(View.VISIBLE);
-            holder.favorite.setFavorite(holder.favorite.isFavorite());
 
             // Faz o download da foto e mostra o ProgressBar
             Picasso.with(context).load(planta.getUrlImagem()).noFade().into(holder.image,
@@ -85,16 +81,6 @@ public class CatalogoAdapter extends BaseAdapter {
                             holder.progress.setVisibility(View.GONE); // Download failed
                         }
                     });
-
-            holder.favorite.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-                @Override
-                public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                    if(holder.favorite.isFavorite())
-                        holder.favorite.setFavorite(true);
-                    else
-                        holder.favorite.setFavorite(false);
-                }
-            });
         }
         return view;
     }
@@ -104,6 +90,5 @@ public class CatalogoAdapter extends BaseAdapter {
         TextView nomePlanta;
         ImageView image;
         ProgressBar progress;
-        MaterialFavoriteButton favorite;
     }
 }

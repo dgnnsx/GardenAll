@@ -21,4 +21,13 @@
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/search_nothing"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
+        android:gravity="center"/>
 </FrameLayout>

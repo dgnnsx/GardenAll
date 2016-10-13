@@ -13,8 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="br.com.gardenall.SearchableActivity"/>
+
+        <provider
+            android:authorities="br.com.gardenall.provider.SearchableProvider"
+            android:name="br.com.gardenall.provider.SearchableProvider"/>
+
         <activity
             android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustPan|adjustNothing"
             android:label="@string/app_name"
             android:configChanges="orientation"
             android:theme="@style/AppTheme.Dark">
@@ -26,13 +35,10 @@
         </activity>
 
         <activity android:name=".activity.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".activity.MainActivity"
+            android:windowSoftInputMode="adjustPan|adjustNothing"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NavDrawer">
@@ -50,7 +56,31 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CatalogoActivity"/>
         </activity>
-        <activity android:name=".activity.SignupActivity" android:theme="@style/AppTheme.Dark" />
-    </application>
 
+        <activity android:name=".activity.SignupActivity" android:theme="@style/AppTheme.Dark" />
+
+        <activity android:name=".SearchableActivity"
+            android:windowSoftInputMode="adjustPan|adjustNothing"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.MainActivity">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <receiver android:name=".extra.AlarmReceiver">
+            <intent-filter>
+                <action android:name="br.com.gardenall.ALARME" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
 </manifest>

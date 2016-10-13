@@ -5,13 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_disconnect">Desconectar</string>
-    
+
     <string name="action_exit">Sair</string>
     <string name="action_sure_disconnect">Tem certeza que quer se desconectar?</string>
     <string name="negative">Não</string>
     <string name="positive">Sim</string>
 
     <string name="error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
+    <string name="action_searchable">Pesquisar plantas</string>
+    <string name="search_hint">Pesquisar plantas</string>
+    <string name="search_nothing">Nenhum resultado encontrado.</string>
+    <string name="action_delete">Remover pesquisas recentes</string>
 
     <string name="regar">Regar as plantas</string>
     <string name="alert_regar">Suas plantas precisam de água. Cuide bem delas!</string>
@@ -133,5 +137,4 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
-
 </resources>

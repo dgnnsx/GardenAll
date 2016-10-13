@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageCatalog"
@@ -27,37 +26,15 @@
             android:visibility="invisible" />
     </FrameLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textCatalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:padding="@dimen/cellText_padding"
         android:background="@color/overlay"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textCatalog"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/cellText_padding"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="@dimen/cellText_textSize"/>
-
-        <com.github.ivbaranov.mfb.MaterialFavoriteButton
-            android:id="@+id/favoriteCatalog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:mfb_animate_favorite="true"
-            app:mfb_animate_unfavorite="false"
-            app:mfb_padding="12"
-            app:mfb_rotation_duration="400"
-            app:mfb_rotation_angle="360"
-            app:mfb_bounce_duration="300"
-            app:mfb_color="white"
-            app:mfb_type="star"/>
-    </LinearLayout>
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/cellText_textSize"/>
 </RelativeLayout>

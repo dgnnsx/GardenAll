@@ -1,12 +1,17 @@
 package br.com.gardenall.activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +30,10 @@ import android.widget.Toast;
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.TabsAdapter;
+import br.com.gardenall.provider.SearchableProvider;
+import br.com.gardenall.utils.Prefs;
 import br.com.gardenall.domain.SQLiteHandler;
 import br.com.gardenall.domain.SessionManager;
-import br.com.gardenall.utils.Prefs;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -134,7 +141,7 @@ public class MainActivity extends AppCompatActivity
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getBaseContext(), "CLifdgfdgk", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "CLick", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
@@ -203,22 +210,35 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.main_plantas, menu);
+        SearchView searchView;
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            searchView = (SearchView) menu.findItem(R.id.action_searchable).getActionView();
+        }
+        else{
+            MenuItem item = menu.findItem(R.id.action_searchable);
+            searchView = (SearchView) MenuItemCompat.getActionView(item);
+        }
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_disconnect) {
             disconnect();
             return true;
+        } else if(id == R.id.action_delete){
+            SearchRecentSuggestions searchRecentSuggestions = new SearchRecentSuggestions(this,
+                    SearchableProvider.AUTHORITY,
+                    SearchableProvider.MODE);
+            searchRecentSuggestions.clearHistory();
+            Toast.makeText(this, "Pesquisas recentes removidas", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -243,10 +263,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void disconnect(){
+    public void disconnect(){
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, R.style.AlertDialogCustom));
-        builder.setIcon(R.drawable.ic_menu_manage);
         builder.setTitle(R.string.action_exit);
         builder.setMessage(R.string.action_sure_disconnect);
 
@@ -256,13 +275,10 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
         });
-
         builder.setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Prefs.setBoolean(getBaseContext(), "login", false);
-                session.setLogin(false);
-                db.deleteUsers();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

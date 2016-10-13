@@ -16,18 +16,19 @@ import android.widget.TextView;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Planta;
+import br.com.gardenall.domain.PlantaDB;
 
 public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHolder> {
     private final Context context;
-    private final List<Planta> plantas;
+    private final ArrayList<Planta> plantas;
     private PlantaOnClickListener plantaOnClickListener;
     private int tabIdentifier;
 
-    public PlantasAdapter(Context context, List<Planta> plantas, PlantaOnClickListener plantaOnClickListener, int tabIdentifier){
+    public PlantasAdapter(Context context, ArrayList<Planta> plantas, PlantaOnClickListener plantaOnClickListener, int tabIdentifier){
         this.context = context;
         this.plantas = plantas;
         this.plantaOnClickListener = plantaOnClickListener;
@@ -44,14 +45,16 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // Atualiza a view
-        Planta planta = plantas.get(position);
+        final Planta planta = plantas.get(position);
         holder.nomePlanta.setText(planta.getNomePlanta());
         holder.progress.setVisibility(View.VISIBLE);
 
         if(tabIdentifier == 0)
             holder.favorite.setVisibility(View.GONE);
-        else
+        else {
             holder.favorite.setVisibility(View.VISIBLE);
+            holder.favorite.setFavorite(true);
+        }
 
         if(position == (plantas.size() - 1))
             holder.separador.setVisibility(View.GONE);
@@ -103,7 +106,14 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
             holder.favorite.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
                 @Override
                 public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                    plantaOnClickListener.onClickFavorite(holder.favorite, position);
+                    PlantaDB db = new PlantaDB(context);
+                    if(favorite) {
+                        planta.setFavorito(1);
+                        db.updateFavorito(planta);
+                    } else {
+                        planta.setFavorito(0);
+                        db.updateFavorito(planta);
+                    }
                 }
             });
         }
@@ -117,7 +127,6 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
     public interface PlantaOnClickListener{
         public void onClickPlanta(View view, int idx);
         public void onLongCLickPlanta(View view, int idx);
-        public void onClickFavorite(View view, int idx);
     }
 
     // ViewHolder com as views

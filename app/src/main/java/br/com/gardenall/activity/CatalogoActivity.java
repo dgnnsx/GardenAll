@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,44 +17,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
-import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.CatalogoAdapter;
-import br.com.gardenall.adapter.PlantasAdapter;
-import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaService;
-import br.com.gardenall.domain.SQLiteHandler;
-import br.com.gardenall.domain.Variaveis;
 import br.com.gardenall.utils.NetworkUtils;
 
 public class CatalogoActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Toolbar toolbar;
-    private List<Planta> plantas;
+    private ArrayList<Planta> plantas;
     private GridView gridView;
-    private SQLiteHandler db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,21 +72,14 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
     private void taskPlantas(boolean refresh){
         // Busca as plantas
         try {
-            PlantaService.getCatalogoDePlantas(this, refresh, new CatalogoCallback() {
-                @Override
-                public void onSuccess(List<Planta> p) {
-                    // ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
-                    gridView.setAdapter(new CatalogoAdapter(getApplicationContext(), p));
-                }
-            });
+            this.plantas = PlantaService.getCatalogoDePlantas(this, refresh);
+            // Atualiza a lista
+            gridView.setAdapter(new CatalogoAdapter(this, plantas));
+            ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
         }
         catch (IOException e) {
             Toast.makeText(getBaseContext(), "Erro ao ler dados.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public interface CatalogoCallback{
-        void onSuccess(List<Planta> p);
     }
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
@@ -148,7 +121,6 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
         Intent intent = new Intent(this, PlantaActivity.class);
         intent.putExtra("planta", plantas.get(position));
 
@@ -164,27 +136,5 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
         else {
             startActivity(intent);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_disconnect) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

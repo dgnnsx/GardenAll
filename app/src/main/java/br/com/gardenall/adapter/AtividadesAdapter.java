@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
             holder.btnLeft.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                     atividadeOnClickListener.onClickBtnLeft(holder.btnLeft, position);
+                    atividadeOnClickListener.onClickBtnLeft(holder.btnLeft, position);
                 }
             });
 
@@ -58,7 +59,20 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
                     atividadeOnClickListener.onClickBtnRight(holder.btnRight, position);
                 }
             });
+
+            holder.switchAlarme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        atividadeOnClickListener.onSwitchTurnedOn(holder.switchAlarme, position);
+                    } else {
+                        atividadeOnClickListener.onSwitchTurnedOff(holder.switchAlarme, position);
+                    }
+                }
+            });
         }
+
+
     }
 
     @Override
@@ -69,6 +83,8 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
     public interface AtividadeOnClickListener{
         public void onClickBtnLeft(View view, int idx);
         public void onClickBtnRight(View view, int idx);
+        public void onSwitchTurnedOn(View view, int idx);
+        public void onSwitchTurnedOff(View view, int idx);
     }
 
     // ViewHolder com as views
