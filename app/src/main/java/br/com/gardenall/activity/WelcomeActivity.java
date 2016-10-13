@@ -32,18 +32,11 @@ public class WelcomeActivity extends AppCompatActivity {
         private TextView[] dots;
         private int[] layouts;
         private Button btnSkip, btnNext;
-        private PrefManager prefManager;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // Checking for first time launch - before calling setContentView()
-            prefManager = new PrefManager(this);
-            if (!prefManager.isFirstTimeLaunch()) {
-                launchHomeScreen();
-                finish();
-            }
 
             // Making notification bar transparent
             if (Build.VERSION.SDK_INT >= 21) {
@@ -123,7 +116,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
         private void launchHomeScreen() {
-            prefManager.setFirstTimeLaunch(false);
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             finish();
         }

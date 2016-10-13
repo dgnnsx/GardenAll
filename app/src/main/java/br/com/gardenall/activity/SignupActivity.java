@@ -66,7 +66,7 @@ public class SignupActivity extends Activity {
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(SignupActivity.this,
-                    WelcomeActivity.class);
+                    MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -119,7 +119,7 @@ public class SignupActivity extends Activity {
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
+                        String id = jObj.getString("id");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
@@ -128,14 +128,14 @@ public class SignupActivity extends Activity {
                                 .getString("created_at");
 
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(name, email, id, created_at);
 
                         Toast.makeText(getApplicationContext(), "Usuário registrado com sucesso!", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
                         Intent intent = new Intent(
                                 SignupActivity.this,
-                                WelcomeActivity.class);
+                                LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

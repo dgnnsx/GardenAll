@@ -72,7 +72,6 @@ public class PlantaService {
             }
         }
         // Se não encontrar, busca na web
-        Toast.makeText(context, "Deu bosta!", Toast.LENGTH_SHORT).show();
         getCatalogoDePlantasFromWeb(new VolleyCallback() {
                     @Override
                     public void onSuccess(List<Planta> p) {
@@ -115,7 +114,7 @@ public class PlantaService {
     private static void getCatalogoDePlantasFromWeb (final VolleyCallback callback){
         final List<Planta>tempPlantas = new ArrayList<>();
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                Variaveis.URL_LIST_PLANTS, new Response.Listener<String>() {
+                Variaveis.URL_LIST_CATALOGO, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                         Log.d(TAG, response.toString());
@@ -131,7 +130,7 @@ public class PlantaService {
                                 // Lê as informações de cada planta
                                 planta.setNomePlanta(jsonLinha.optString("nome"));
                                 Log.d(TAG, jsonLinha.optString("nome"));
-                                planta.setUrlImagem("naotemimagem");
+                                planta.setUrlImagem(jsonLinha.optString("url"));
                                 tempPlantas.add(planta);
                             }
                             callback.onSuccess(tempPlantas);

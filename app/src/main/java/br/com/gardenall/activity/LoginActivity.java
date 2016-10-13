@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -118,26 +118,33 @@ public class LoginActivity extends AppCompatActivity {
                         session.setLogin(true);
 
                         // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
+                        String id = jObj.getString("id");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
                         String created_at = user.getString("created_at");
+                        int first_time_launch = user.getInt("first_time_launch");
 
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(name, email, id, created_at);
 
-                        // Launch main activity
-                        Intent intent = new Intent(LoginActivity.this,
-                                WelcomeActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (first_time_launch == 0){
+                            Intent intent = new Intent(LoginActivity.this,
+                                    WelcomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                "Eita! E-mail ou senhas incorretos. Digite novamente por favor :)", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
