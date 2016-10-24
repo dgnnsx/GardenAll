@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -73,6 +74,7 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
         // Busca as plantas
         try {
             this.plantas = PlantaService.getCatalogoDePlantas(this, refresh);
+            Log.d("PlantasSize: ", Integer.toString(plantas.size()));
             // Atualiza a lista
             gridView.setAdapter(new CatalogoAdapter(this, plantas));
             ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();

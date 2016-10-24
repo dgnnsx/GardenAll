@@ -5,8 +5,10 @@ package br.com.gardenall.Callback;
  */
 
 import java.util.ArrayList;
+import java.util.List;
+
 import br.com.gardenall.domain.Planta;
 
-public interface VolleyCallback {
+public interface RetroCallBack {
     void onSuccess(ArrayList<Planta> plantas);
 }
