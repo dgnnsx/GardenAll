@@ -21,10 +21,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG,"Você precisa comer: " + new Date());
+        Log.d(TAG, "Atividade: " + new Date());
 
         Intent notifIntent = new Intent(context,MainActivity.class);
 
-        NotificationUtil.create(context, 1, notifIntent, R.mipmap.ic_launcher,"Hora de comer algo...","Que tal uma fruta?");
+        NotificationUtil.create(context, 1, notifIntent, R.mipmap.logotipo, "GardenAll", "Você tem uma atividade agendada para agora");
     }
 }

@@ -20,6 +20,9 @@
     <string name="regar">Regar as plantas</string>
     <string name="alert_regar">Suas plantas precisam de água. Cuide bem delas!</string>
 
+    <string name="hint_atividade">Nome da nova atividade</string>
+    <string name="hint_desc_atividade">Descrição da atividade</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

@@ -26,6 +26,7 @@
             android:windowSoftInputMode="adjustPan|adjustNothing"
             android:label="@string/app_name"
             android:configChanges="orientation"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +58,12 @@
                 android:value=".activity.CatalogoActivity"/>
         </activity>
 
-        <activity android:name=".activity.SignupActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".activity.SignupActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:parentActivityName=".activity.LoginActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CatalogoActivity"/>
+        </activity>
 
         <activity android:name=".SearchableActivity"
             android:windowSoftInputMode="adjustPan|adjustNothing"

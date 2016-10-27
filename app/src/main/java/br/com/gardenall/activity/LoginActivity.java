@@ -44,9 +44,17 @@ public class LoginActivity extends AppCompatActivity {
 
         // Session manager
         session = new SessionManager(LoginActivity.this);
+        boolean b = true;
 
         // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
+        /*if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }*/
+
+        if (b) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -87,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
+                startActivity(intent);
                 finish();
             }
         });

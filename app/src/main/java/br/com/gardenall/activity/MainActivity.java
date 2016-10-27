@@ -4,12 +4,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -22,14 +22,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.TabsAdapter;
+import br.com.gardenall.domain.Atividade;
+import br.com.gardenall.domain.AtividadeDB;
+import br.com.gardenall.domain.AtividadeService;
 import br.com.gardenall.provider.SearchableProvider;
 import br.com.gardenall.utils.Prefs;
 import br.com.gardenall.domain.SQLiteHandler;
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private TabsAdapter adapter;
     private SQLiteHandler db;
     private SessionManager session;
+    private boolean isValidNome, isValidAtividade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +149,7 @@ public class MainActivity extends AppCompatActivity
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getBaseContext(), "CLick", Toast.LENGTH_SHORT).show();
+                        addAtividade();
                     }
                 });
                 break;
@@ -161,12 +169,12 @@ public class MainActivity extends AppCompatActivity
         int position = PlantasApplication.INDEX_OF_TAB;
         switch (position) {
             case 0:
-                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                //fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab.show();
                 break;
 
             case 1:
-                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLink)));
+                //fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLink)));
                 fab.show();
                 break;
 
@@ -287,6 +295,58 @@ public class MainActivity extends AppCompatActivity
             }
         });
         AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void addAtividade() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+        builder.setTitle("Adicionar atividade");
+        builder.setIcon(R.drawable.ic_alarm_add_black);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.dialog_add_atividade, null);
+        //aqui o conteudo
+        final Button button = (Button) layout.findViewById(R.id.botao_Add);
+        final TextInputLayout nomeAtividadeLayout = (TextInputLayout) layout.findViewById(R.id.nomeAtividadeLayout);
+        final TextInputLayout descAtividadeLayout = (TextInputLayout) layout.findViewById(R.id.descAtividadeLayout);
+        final EditText descAtividade = (EditText) layout.findViewById(R.id.descAtividade);
+        final EditText nomeAtividade = (EditText) layout.findViewById(R.id.nomeAtividade);
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (nomeAtividade.length() == 0) {
+                    isValidNome = false;
+                    nomeAtividadeLayout.setError("Dê um nome para identificar sua atividade");
+                } else {
+                    isValidNome = true;
+                    nomeAtividadeLayout.setError(null);
+                }
+
+                if (descAtividade.length() == 0) {
+                    isValidAtividade = false;
+                    descAtividadeLayout.setError("Digite uma breve descrição da atividade");
+                } else {
+                    isValidAtividade = true;
+                    descAtividadeLayout.setError(null);
+                }
+
+                if(isValidNome && isValidAtividade) {
+                    Atividade at = new Atividade();
+                    at.setTitulo(nomeAtividade.getText().toString());
+                    at.setDescricao(descAtividade.getText().toString());
+                    AtividadeDB db = new AtividadeDB(getBaseContext());
+                    Atividade at2 = db.findByNome(at.getTitulo());
+                    if(at2 == null) {
+                        AtividadeService.saveAtividade(getBaseContext(), at);
+                    } else {
+                        Toast.makeText(getBaseContext(), "Atividade já salva na lista do usuário!", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
         dialog.show();
     }
 }

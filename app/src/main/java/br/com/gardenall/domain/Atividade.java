@@ -5,12 +5,21 @@ package br.com.gardenall.domain;
  */
 
 public class Atividade {
+    private long id;
     private String titulo;
-    private String subTitulo;
+    private String descricao;
     private String horario;
     private static boolean status;
 
     public Atividade(){}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitulo(){
         return titulo;
@@ -20,12 +29,12 @@ public class Atividade {
         this.titulo = titulo;
     }
 
-    public String getSubTitulo(){
-        return subTitulo;
+    public String getDescricao(){
+        return descricao;
     }
 
-    public void setSubTitulo(String subTitulo){
-        this.subTitulo = subTitulo;
+    public void setDescricao(String subTitulo){
+        this.descricao = subTitulo;
     }
 
     public String getHorario(){

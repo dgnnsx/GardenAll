@@ -5,55 +5,61 @@ package br.com.gardenall.domain;
  */
 
 import android.content.Context;
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gardenall.R;
-import br.com.gardenall.utils.FileUtils;
-
-
 public class AtividadeService {
     public static final String TAG = "AtividadeService";
 
-    public static List<Atividade> getAtividades(Context context){
-        try{
-            String json = FileUtils.readRawFileString(context, R.raw.atividades, "UTF-8");
-            List<Atividade> atividades = parserJSON(context, json);
-            return atividades;
+    public static ArrayList<Atividade> getAtividades(Context context, boolean refresh) throws IOException {
+        ArrayList<Atividade> ats = null;
+        boolean searchInDB = !refresh;
+        if(searchInDB) {
+            // Busca no banco de dados
+            ats = getAtividadesFromDB(context);
+            if(ats != null && ats.size() > 0) {
+                // Retorna as plantas encontradas no banco
+                return ats;
+            }
+        } else {
+            // Busca no banco de dados
+            ats = getAtividadesFromDB(context);
+            if(ats != null && ats.size() > 0) {
+                // Retorna as plantas encontradas no banco
+                return ats;
+            }
         }
-        catch(Exception e){
-            Log.e(TAG, "Erro ao ler dados: " +e.getMessage(), e);
-            return null;
+        return ats;
+    }
+
+    private static ArrayList<Atividade> getAtividadesFromDB(Context context) throws IOException {
+        AtividadeDB db = new AtividadeDB(context);
+        try {
+            ArrayList<Atividade> ats = db.findAll();
+            return ats;
+        } finally {
+            db.close();
         }
     }
 
-    private static List<Atividade> parserJSON(Context context, String json) throws IOException {
-        List<Atividade> atividades = new ArrayList<Atividade>();
-        try{
-            JSONObject root = new JSONObject(json);
-            JSONObject object = root.getJSONObject("atividades");
-            JSONArray jsonAtividades = object.getJSONArray("atividade");
-            // Insere as atividades na lista
-            for(int i = 0; i < jsonAtividades.length(); i++){
-                JSONObject jsonAtividade = jsonAtividades.getJSONObject(i);
-                Atividade atividade = new Atividade();
-                // Lê as informações de cada atividade
-                atividade.setTitulo(jsonAtividade.optString("titulo"));
-                atividade.setSubTitulo(jsonAtividade.optString("subTitulo"));
-                atividade.setHorario(jsonAtividade.optString("horario"));
-                atividades.add(atividade);
-            }
+    public static void saveAtividade(Context context, Atividade atividade) {
+        AtividadeDB db = new AtividadeDB(context);
+        try {
+            // Salva a atividade
+            db.save(atividade);
+        } finally {
+            db.close();
         }
-        catch(JSONException e){
-            throw new IOException(e.getMessage(), e);
+    }
+
+    public static void updateAtividade(Context context, Atividade atividade) {
+        AtividadeDB db = new AtividadeDB(context);
+        try {
+            // Atualiza a atividade
+            db.update(atividade);
+        } finally {
+            db.close();
         }
-        return atividades;
     }
 }

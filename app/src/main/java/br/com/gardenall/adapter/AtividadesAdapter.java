@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.List;
+
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Atividade;
 
@@ -41,7 +42,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
         // Atualiza a view
         Atividade atividade = atividades.get(position);
         holder.titulo.setText(atividade.getTitulo());
-        holder.subTitulo.setText(atividade.getSubTitulo());
+        holder.descricao.setText(atividade.getDescricao());
         holder.horario.setText(atividade.getHorario());
         holder.switchAlarme.setChecked(atividade.getStatus());
 
@@ -49,7 +50,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
             holder.btnLeft.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    atividadeOnClickListener.onClickBtnLeft(holder.btnLeft, position);
+                    atividadeOnClickListener.onClickBtnLeft(holder.btnLeft, holder.btnRight, position, holder.horario);
                 }
             });
 
@@ -71,8 +72,6 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
                 }
             });
         }
-
-
     }
 
     @Override
@@ -81,17 +80,17 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
     }
 
     public interface AtividadeOnClickListener{
-        public void onClickBtnLeft(View view, int idx);
-        public void onClickBtnRight(View view, int idx);
+        public void onClickBtnLeft(Button buttonL, Button buttonR, int idx, TextView horario);
+        public void onClickBtnRight(Button button, int idx);
         public void onSwitchTurnedOn(View view, int idx);
         public void onSwitchTurnedOff(View view, int idx);
     }
 
     // ViewHolder com as views
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView titulo;
-        TextView subTitulo;
-        TextView horario;
+        public TextView titulo;
+        public TextView descricao;
+        public TextView horario;
         Switch switchAlarme;
         Button btnLeft;
         Button btnRight;
@@ -99,7 +98,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
         public ViewHolder(View view){
             super(view);
             titulo = (TextView) view.findViewById(R.id.text1);
-            subTitulo = (TextView) view.findViewById(R.id.text2);
+            descricao = (TextView) view.findViewById(R.id.text2);
             horario = (TextView) view.findViewById(R.id.textId);
             btnLeft = (Button) view.findViewById(R.id.btnLeft);
             btnRight = (Button) view.findViewById(R.id.btnRight);
