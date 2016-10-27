@@ -119,16 +119,15 @@ public class SignupActivity extends Activity {
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        String id = jObj.getString("id");
-
                         JSONObject user = jObj.getJSONObject("user");
+                        int id = jObj.getInt("id");
                         String name = user.getString("name");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
 
                         // Inserting row in users table
-                        db.addUser(name, email, id, created_at);
+                        db.addUser(name, email, Integer.toString(id), created_at);
 
                         Toast.makeText(getApplicationContext(), "Usuário registrado com sucesso!", Toast.LENGTH_LONG).show();
 

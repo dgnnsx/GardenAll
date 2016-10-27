@@ -3,17 +3,24 @@ package br.com.gardenall.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by diego on 26/08/16.
  */
 public class Planta implements Parcelable {
-    private long id;
-    private String nomePlanta;
-    private String urlImagem;
     private int favorito;
     private int selected;
 
-    public Planta(){}
+    @SerializedName("id_p")
+    private long id;
+    @SerializedName("nome")
+    private String nomePlanta;
+    @SerializedName("url")
+    private String urlImagem;
+
+    public Planta(){
+    }
 
     public long getId() {
         return id;

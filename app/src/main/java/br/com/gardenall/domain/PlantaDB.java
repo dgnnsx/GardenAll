@@ -159,7 +159,7 @@ public class PlantaDB extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("nomePlanta", planta.getNomePlanta());
             values.put("urlImagem", planta.getUrlImagem());
-            values.put("favorito", planta.getFavorito());
+            values.put("favorito", "");
             if(id != 0) {
                 String _id = String.valueOf(planta.getId());
                 String[] whereArgs = new String[]{_id};
