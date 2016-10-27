@@ -2,25 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen1">
+    android:background="@drawable/planta_favoritada_xlarge_background">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="@dimen/img_width_height"
-            android:layout_height="@dimen/img_width_height"
-            android:src="@drawable/ic_food" />
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="118dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slide_1_title"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_green_dark"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold" />
 
@@ -32,7 +30,7 @@
             android:paddingRight="@dimen/desc_padding"
             android:text="@string/slide_1_desc"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_green_dark"
             android:textSize="@dimen/slide_desc" />
 
     </LinearLayout>
