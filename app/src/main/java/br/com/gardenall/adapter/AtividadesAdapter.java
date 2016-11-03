@@ -17,14 +17,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.gardenall.R;
-import br.com.gardenall.domain.Atividade;
+import br.com.gardenall.domain.AppController;
 
 public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.ViewHolder> {
     private final Context context;
-    private final List<Atividade> atividades;
+    private final List<AppController.Atividade> atividades;
     private AtividadeOnClickListener atividadeOnClickListener;
 
-    public AtividadesAdapter(Context context, List<Atividade> atividades, AtividadeOnClickListener atividadeOnClickListener){
+    public AtividadesAdapter(Context context, List<AppController.Atividade> atividades, AtividadeOnClickListener atividadeOnClickListener){
         this.context = context;
         this.atividades = atividades;
         this.atividadeOnClickListener = atividadeOnClickListener;
@@ -40,7 +40,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // Atualiza a view
-        Atividade atividade = atividades.get(position);
+        AppController.Atividade atividade = atividades.get(position);
         holder.titulo.setText(atividade.getTitulo());
         holder.descricao.setText(atividade.getDescricao());
         holder.horario.setText(atividade.getHorario());

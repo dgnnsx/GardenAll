@@ -159,8 +159,11 @@ public class PlantaDB extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("nomePlanta", planta.getNomePlanta());
             values.put("urlImagem", planta.getUrlImagem());
+            values.put("_id", planta.getId());
             values.put("favorito", "");
-            if(id != 0) {
+            db.insert(CATALOGO_DB, "", values);
+            return planta.getId();
+           /* if(id != 0) {
                 String _id = String.valueOf(planta.getId());
                 String[] whereArgs = new String[]{_id};
                 // update planta set values = ... where _id=?
@@ -170,7 +173,7 @@ public class PlantaDB extends SQLiteOpenHelper {
                 // insert into planta values (...)
                 id = db.insert(CATALOGO_DB, "", values);
                 return id;
-            }
+            }*/
         } finally {
             db.close();
         }
@@ -200,6 +203,23 @@ public class PlantaDB extends SQLiteOpenHelper {
         try {
             // select * from planta
             Cursor c = db.query(CATALOGO_DB, null, "nomePlanta=?", new String[]{nome}, null, null, null, null);
+            if(c.moveToFirst()) {
+                Planta planta = new Planta();
+                readOnCatalogo(c, planta);
+                return planta;
+            }
+            return null;
+        } finally {
+            db.close();
+        }
+    }
+
+    // Busca a planta pelo nome no catalogo
+    public Planta findByIdOnCatalogo(Long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            // select * from planta
+            Cursor c = db.query(CATALOGO_DB, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null, null);
             if(c.moveToFirst()) {
                 Planta planta = new Planta();
                 readOnCatalogo(c, planta);

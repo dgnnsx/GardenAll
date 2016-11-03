@@ -13,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import java.util.Calendar;
 
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.AtividadesAdapter;
-import br.com.gardenall.domain.Atividade;
+import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.AtividadeService;
 import br.com.gardenall.extra.AlarmReceiver;
 import br.com.gardenall.utils.AlarmUtil;
@@ -43,8 +42,8 @@ public class AtividadesFragment extends Fragment
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private ArrayList<Atividade> atividades;
-    private Atividade atividade;
+    private ArrayList<AppController.Atividade> atividades;
+    private AppController.Atividade atividade;
     private int year, month, day, hour, minute;
     private boolean isProgrammed;
     TextView textView;

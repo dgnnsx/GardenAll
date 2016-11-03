@@ -52,4 +52,10 @@ public class Prefs {
         String s = pref.getString(flag, null);
         return s;
     }
+
+    public static void clearPreferences(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREF_ID, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear().commit();
+    }
 }

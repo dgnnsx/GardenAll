@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8BC34A</color>
-    <color name="colorPrimaryDark">#689F38</color>
-    <color name="colorAccent">	#8ba100</color>
+    <color name="colorPrimary">#3AAE68</color>
+    <color name="colorPrimaryDark">#1EA053</color>
+    <color name="colorAccent">	#C28B4D</color>
     <color name="control_highlight">#DCEDC8</color>
     <color name="error">#BD1644</color>
     <color name="overlay">#80000000</color>
@@ -28,7 +28,7 @@
     <color name="primary_dark">#E12929</color>
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
-
+    <color name="brown">#4e342e</color>
     <color name="jet">#222222</color>
     <color name="oil">#333333</color>
     <color name="monsoon">#777777</color>
@@ -36,9 +36,12 @@
     <color name="aluminum">#999999</color>
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
+    <color name="pi">#474746</color>
+    <color name="abobora">#C28B4D</color>
+    <color name="spa">#3AAE68</color>
 
     <!-- Screens background color-->
-    <color name="bg_screen1">#f64c73</color>
+    <color name="bg_screen1">#8FB783</color>
     <color name="bg_screen2">#20d2bb</color>
     <color name="bg_screen3">#3395ff</color>
     <color name="bg_screen4">#c873f4</color>

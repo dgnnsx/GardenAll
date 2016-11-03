@@ -27,7 +27,6 @@ package br.com.gardenall.domain;
         private static final String KEY_ID = "id";
         private static final String KEY_NAME = "name";
         private static final String KEY_EMAIL = "email";
-        private static final String KEY_UID = "uid";
         private static final String KEY_CREATED_AT = "created_at";
 
         public SQLiteHandler(Context context) {
@@ -39,8 +38,7 @@ package br.com.gardenall.domain;
         public void onCreate(SQLiteDatabase db) {
             String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
                     + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                    + KEY_EMAIL + " TEXT UNIQUE," + KEY_UID + " TEXT,"
-                    + KEY_CREATED_AT + " TEXT" + ")";
+                    + KEY_EMAIL + " TEXT UNIQUE," + KEY_CREATED_AT + " TEXT" + ")";
             db.execSQL(CREATE_LOGIN_TABLE);
 
             Log.d(TAG, "Database tables created");
@@ -59,20 +57,20 @@ package br.com.gardenall.domain;
         /**
          * Storing user details in database
          * */
-        public void addUser(String name, String email, String uid, String created_at) {
+        public void addUser(String name, String email, int id, String created_at) {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put(KEY_NAME, name); // Name
-            values.put(KEY_EMAIL, email); // Email
-            values.put(KEY_UID, uid); // Email
-            values.put(KEY_CREATED_AT, created_at); // Created At
+            values.put(KEY_NAME, name);
+            values.put(KEY_EMAIL, email);
+            values.put(KEY_ID, String.valueOf(id));
+            values.put(KEY_CREATED_AT, created_at);
 
             // Inserting Row
-            long id = db.insert(TABLE_USER, null, values);
+            long resp = db.insert(TABLE_USER, null, values);
             db.close(); // Closing database connection
 
-            Log.d(TAG, "New user inserted into sqlite: " + id);
+            Log.d(TAG, "New user inserted into sqlite: " + resp);
         }
 
         /**
@@ -85,12 +83,8 @@ package br.com.gardenall.domain;
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(selectQuery, null);
             // Move to first row
-            cursor.moveToFirst();
-            if (cursor.getCount() > 0) {
-                user.put("name", cursor.getString(1));
-                user.put("email", cursor.getString(2));
-                user.put("uid", cursor.getString(3));
-                user.put("created_at", cursor.getString(4));
+            if (cursor.moveToFirst()) {
+                user.put("email", cursor.getString(cursor.getColumnIndex("email")));
             }
             cursor.close();
             db.close();

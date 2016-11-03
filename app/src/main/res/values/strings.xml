@@ -10,6 +10,7 @@
     <string name="action_sure_disconnect">Tem certeza que quer se desconectar?</string>
     <string name="negative">Não</string>
     <string name="positive">Sim</string>
+    <string name="ok">Ok</string>
 
     <string name="error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
     <string name="action_searchable">Pesquisar plantas</string>
@@ -140,4 +141,6 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
+    <string name="facebook_app_id">208681342892965</string>
 </resources>

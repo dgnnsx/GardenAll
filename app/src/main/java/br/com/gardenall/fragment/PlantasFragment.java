@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
@@ -33,6 +34,9 @@ import br.com.gardenall.adapter.PlantasAdapter;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
 import br.com.gardenall.domain.PlantaService;
+import br.com.gardenall.domain.SQLiteHandler;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class PlantasFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -203,10 +207,14 @@ public class PlantasFragment extends Fragment {
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 ArrayList<Planta> selectedPlantas = getSelectedPlantas();
+                SQLiteHandler db2 = new SQLiteHandler(getApplicationContext());
+                HashMap<String,String> user;
+                user = db2.getUserDetails();
                 if(item.getItemId() == R.id.action_remove){
                     PlantaDB db = new PlantaDB(getContext());
                     try{
                         for(Planta p : selectedPlantas){
+                            PlantaService.deletePlantaWeb(p.getId(), user.get("email"));
                             db.delete(p); // Deleta a planta do banco
                             plantas.remove(p); // remove da lista
                         }

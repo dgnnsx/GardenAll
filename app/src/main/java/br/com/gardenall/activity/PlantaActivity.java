@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,10 +20,13 @@ import android.widget.Toast;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import br.com.gardenall.R;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
 import br.com.gardenall.domain.PlantaService;
+import br.com.gardenall.domain.SQLiteHandler;
 
 public class PlantaActivity extends AppCompatActivity {
     private boolean isUsingTransition = false;
@@ -30,6 +34,8 @@ public class PlantaActivity extends AppCompatActivity {
     private ImageView image;
     private Planta planta, p;
     private MaterialFavoriteButton favorite;
+    private HashMap<String,String> user;
+    private SQLiteHandler db2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,8 @@ public class PlantaActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planta);
+
+        db2 = new SQLiteHandler(getApplicationContext());
 
         if(savedInstanceState != null) {
             planta = savedInstanceState.getParcelable("planta");
@@ -97,8 +105,11 @@ public class PlantaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 PlantaDB db = new PlantaDB(getBaseContext());
                 p = db.findByNome(planta.getNomePlanta());
+                user = db2.getUserDetails();
                 if(p == null) {
+                    Log.d("IDP: ", Long.toString(planta.getId()));
                     PlantaService.savePlanta(getBaseContext(), planta);
+                    PlantaService.savePlantaWeb(planta.getId(), user.get("email"));
                     Toast.makeText(getBaseContext(), "Planta salva com sucesso!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getBaseContext(), "Planta já salva na lista do usuário!", Toast.LENGTH_SHORT).show();

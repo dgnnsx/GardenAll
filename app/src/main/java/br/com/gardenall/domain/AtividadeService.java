@@ -7,13 +7,11 @@ package br.com.gardenall.domain;
 import android.content.Context;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 public class AtividadeService {
     public static final String TAG = "AtividadeService";
 
-    public static ArrayList<Atividade> getAtividades(Context context, boolean refresh) throws IOException {
-        ArrayList<Atividade> ats = null;
+    public static ArrayList<AppController.Atividade> getAtividades(Context context, boolean refresh) throws IOException {
+        ArrayList<AppController.Atividade> ats = null;
         boolean searchInDB = !refresh;
         if(searchInDB) {
             // Busca no banco de dados
@@ -33,17 +31,17 @@ public class AtividadeService {
         return ats;
     }
 
-    private static ArrayList<Atividade> getAtividadesFromDB(Context context) throws IOException {
+    private static ArrayList<AppController.Atividade> getAtividadesFromDB(Context context) throws IOException {
         AtividadeDB db = new AtividadeDB(context);
         try {
-            ArrayList<Atividade> ats = db.findAll();
+            ArrayList<AppController.Atividade> ats = db.findAll();
             return ats;
         } finally {
             db.close();
         }
     }
 
-    public static void saveAtividade(Context context, Atividade atividade) {
+    public static void saveAtividade(Context context, AppController.Atividade atividade) {
         AtividadeDB db = new AtividadeDB(context);
         try {
             // Salva a atividade
@@ -53,7 +51,7 @@ public class AtividadeService {
         }
     }
 
-    public static void updateAtividade(Context context, Atividade atividade) {
+    public static void updateAtividade(Context context, AppController.Atividade atividade) {
         AtividadeDB db = new AtividadeDB(context);
         try {
             // Atualiza a atividade

@@ -9,6 +9,6 @@ import java.util.List;
 
 import br.com.gardenall.domain.Planta;
 
-public interface RetroCallBack {
+public interface VolleyCallBack {
     void onSuccess(ArrayList<Planta> plantas);
 }
