@@ -7,28 +7,15 @@ package br.com.gardenall.domain;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
-
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 
-import br.com.gardenall.Callback.RetroCallBack;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import br.com.gardenall.R;
+import br.com.gardenall.utils.FileUtils;
 
 public class PlantaService {
     public static final String TAG = "PlantaService";
@@ -56,8 +43,8 @@ public class PlantaService {
         return plantas;
     }
 
-    public static ArrayList<Planta> getCatalogoDePlantas(final Context context, boolean refresh) throws IOException {
-        ArrayList<Planta> plantas;
+    public static ArrayList<Planta> getCatalogoDePlantas(Context context, boolean refresh) throws IOException {
+        ArrayList<Planta> plantas = null;
         boolean searchInDB = !refresh;
         if(searchInDB) {
             // Busca no banco de dados
@@ -68,30 +55,8 @@ public class PlantaService {
             }
         }
         // Se não encontrar, busca na web
-
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-        rx.Observable<PlantaRetroResponse> call = apiService.getPlantas();
-        call.subscribeOn(Schedulers.newThread());
-        call.observeOn(AndroidSchedulers.mainThread());
-        call.subscribe(new Subscriber<PlantaRetroResponse>() {
-            @Override
-            public final void onCompleted() {
-
-            }
-
-            @Override
-            public final void onError(Throwable e) {
-                Log.e("GithubDemo", e.getMessage());
-            }
-
-            @Override
-            public final void onNext(PlantaRetroResponse response) {
-                ArrayList<Planta> plantas2 = response.getPlantas();
-                saveCatalogoDePlantas(context, plantas2);
-            }
-        });
-        return getCatalogoDePlantasFromDB(context);
+        plantas = getCatalogoDePlantasFromWeb(context);
+        return plantas;
     }
 
     private static ArrayList<Planta> getPlantasFromDB(Context context) throws IOException {
@@ -114,66 +79,14 @@ public class PlantaService {
         }
     }
 
-    /*private static void getCatalogoDePlantasFromWeb (final VolleyCallback callback) throws IOException {
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                Variaveis.URL_LIST_CATALOGO,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        callback.onSuccess(parserVolley(response));
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "Registration Error: " + error.getMessage());
-                    }
-                });
-        AppController.getInstance().addToRequestQueue(strReq);
-    }*/
-
-    /*private static void getCatalogoDePlantasFromWeb(final RetroCallBack retroCallBack){
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-        rx.Observable<PlantaRetroResponse> call = apiService.getPlantas();
-        call.subscribeOn(Schedulers.newThread());
-        call.observeOn(AndroidSchedulers.mainThread());
-
-
-        call.enqueue(new Callback<PlantaRetroResponse>() {
-            @Override
-            public void onResponse(Call<PlantaRetroResponse>call, Response<PlantaRetroResponse> response) {
-                ArrayList<Planta> plantas= response.body().getPlantas();
-                Log.d(TAG, "Number of movies received: " + plantas.get(0).getNomePlanta());
-                retroCallBack.onSuccess(plantas);
-            }
-
-            @Override
-            public void onFailure(Call<PlantaRetroResponse>call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-            }
-        });
-    }*/
-
-   /* private static ArrayList<Planta> parserVolley(String response) {
-        ArrayList<Planta> plantas = new ArrayList<Planta>();
-        try {
-            JSONObject root = new JSONObject(response.toString());
-            JSONArray jsonPlantas = root.getJSONArray("plantas");
-            for (int i = 0; i < jsonPlantas.length(); i++) {
-                JSONObject jsonLinha = jsonPlantas.getJSONObject(i);
-                Planta planta = new Planta();
-                // Lê as informações de cada planta
-                planta.setNomePlanta(jsonLinha.optString("nome"));
-                planta.setUrlImagem(jsonLinha.optString("url"));
-                plantas.add(planta);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return plantas;
+    private static ArrayList<Planta> getCatalogoDePlantasFromWeb(Context context) throws IOException {
+        String json = FileUtils.readRawFileString(context, R.raw.plantas, "UTF-8");
+        ArrayList<Planta> plantas = parserJSON(context, json);
+        // Depois de buscar, salva as plantas
+        saveCatalogoDePlantas(context, plantas);
+        return getCatalogoDePlantasFromDB(context);
     }
-*/
+
     public static ArrayList<Planta> getFavorites(Context context) throws IOException {
         ArrayList<Planta> plantasAux = PlantaService.getCatalogoDePlantasFromDB(context);
         ArrayList<Planta> plantas = new ArrayList<>();
@@ -252,3 +165,102 @@ public class PlantaService {
         return plantas;
     }
 }
+
+/* public static ArrayList<Planta> getCatalogoDePlantas(final Context context, boolean refresh) throws IOException {
+        ArrayList<Planta> plantas;
+        boolean searchInDB = !refresh;
+        if(searchInDB) {
+            // Busca no banco de dados
+            plantas = getCatalogoDePlantasFromDB(context);
+            if(plantas != null && plantas.size() > 0) {
+                // Retorna as plantas encontradas no banco
+                return plantas;
+            }
+        }
+        // Se não encontrar, busca na web
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        rx.Observable<PlantaRetroResponse> call = apiService.getPlantas();
+        call.subscribeOn(Schedulers.newThread());
+        call.observeOn(AndroidSchedulers.mainThread());
+        call.subscribe(new Subscriber<PlantaRetroResponse>() {
+            @Override
+            public final void onCompleted() {
+
+            }
+
+            @Override
+            public final void onError(Throwable e) {
+                Log.e("GithubDemo", e.getMessage());
+            }
+
+            @Override
+            public final void onNext(PlantaRetroResponse response) {
+                ArrayList<Planta> plantas2 = response.getPlantas();
+                saveCatalogoDePlantas(context, plantas2);
+            }
+        });
+        return getCatalogoDePlantasFromDB(context);
+    } */
+
+    /*private static void getCatalogoDePlantasFromWeb (final VolleyCallback callback) throws IOException {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                Variaveis.URL_LIST_CATALOGO,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        callback.onSuccess(parserVolley(response));
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Registration Error: " + error.getMessage());
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(strReq);
+    }*/
+
+    /*private static void getCatalogoDePlantasFromWeb(final RetroCallBack retroCallBack){
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        rx.Observable<PlantaRetroResponse> call = apiService.getPlantas();
+        call.subscribeOn(Schedulers.newThread());
+        call.observeOn(AndroidSchedulers.mainThread());
+
+
+        call.enqueue(new Callback<PlantaRetroResponse>() {
+            @Override
+            public void onResponse(Call<PlantaRetroResponse>call, Response<PlantaRetroResponse> response) {
+                ArrayList<Planta> plantas= response.body().getPlantas();
+                Log.d(TAG, "Number of movies received: " + plantas.get(0).getNomePlanta());
+                retroCallBack.onSuccess(plantas);
+            }
+
+            @Override
+            public void onFailure(Call<PlantaRetroResponse>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+    }*/
+
+   /* private static ArrayList<Planta> parserVolley(String response) {
+        ArrayList<Planta> plantas = new ArrayList<Planta>();
+        try {
+            JSONObject root = new JSONObject(response.toString());
+            JSONArray jsonPlantas = root.getJSONArray("plantas");
+            for (int i = 0; i < jsonPlantas.length(); i++) {
+                JSONObject jsonLinha = jsonPlantas.getJSONObject(i);
+                Planta planta = new Planta();
+                // Lê as informações de cada planta
+                planta.setNomePlanta(jsonLinha.optString("nome"));
+                planta.setUrlImagem(jsonLinha.optString("url"));
+                plantas.add(planta);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return plantas;
+    }
+*/

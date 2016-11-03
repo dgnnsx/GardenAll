@@ -28,8 +28,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
@@ -40,7 +52,6 @@ import br.com.gardenall.domain.AtividadeService;
 import br.com.gardenall.provider.SearchableProvider;
 import br.com.gardenall.utils.Prefs;
 import br.com.gardenall.domain.SQLiteHandler;
-import br.com.gardenall.domain.SessionManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,41 +62,29 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
     private FloatingActionButton fab;
     private TabsAdapter adapter;
+    private View mHeaderView;
     private SQLiteHandler db;
-    private SessionManager session;
     private boolean isValidNome, isValidAtividade;
+    private ProfileTracker mProfileTracker;
+    private Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean login = Prefs.getBoolean(this, "login");
+        if(login == false) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,                               /* host Activity */
-                drawerLayout,                       /* DrawerLayout object */
-                toolbar,                            /* nav drawer image to replace 'Up' caret */
-                R.string.navigation_drawer_open,    /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close    /* "close drawer" description for accessibility */
-
-        ){
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                PlantasApplication.finishActionMode();
-                super.onDrawerStateChanged(newState);
-            }
-        };
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setupFacebookSdk();
+        setUpToolbar();
+        setupNavDrawer();
+        setupSession();
 
         // Cor de fundo da barra de status
         drawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
@@ -117,12 +116,68 @@ public class MainActivity extends AppCompatActivity
 
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
+    }
 
-        // session manager
-        session = new SessionManager(getApplicationContext());
+    private void setupFacebookSdk() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+    }
 
-        if (!session.isLoggedIn()) {
-            disconnect();
+    private void setUpToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+    }
+
+    private void setupNavDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this,                               /* host Activity */
+                drawerLayout,                       /* DrawerLayout object */
+                toolbar,                            /* nav drawer image to replace 'Up' caret */
+                R.string.navigation_drawer_open,    /* "open drawer" description for accessibility */
+                R.string.navigation_drawer_close    /* "close drawer" description for accessibility */
+
+        ){
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                PlantasApplication.finishActionMode();
+                super.onDrawerStateChanged(newState);
+            }
+        };
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        mHeaderView = navigationView.getHeaderView(0);
+    }
+
+    private void setupSession() {
+        if(AccessToken.getCurrentAccessToken() != null) {
+            /* Login feito via Facebook */
+            if(Profile.getCurrentProfile() == null) {
+                mProfileTracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                        mProfileTracker.stopTracking();
+                    }
+                };
+            } else {
+                profile = Profile.getCurrentProfile();
+                ImageView img = (ImageView) mHeaderView.findViewById(R.id.app_image);
+                Picasso.with(this)
+                        .load("https://graph.facebook.com/" + profile.getId() + "/picture?type=large")
+                        .into(img);
+                TextView nome = (TextView) mHeaderView.findViewById(R.id.text_nav_name);
+                nome.setText(profile.getName());
+                TextView email = (TextView) mHeaderView.findViewById(R.id.text_nav_city);
+                String emailFb = Prefs.getString(getBaseContext(), "facebook_login");
+                email.setText(emailFb);
+            }
+        } else {
+            /* Login via conta GardenAll */
+            /* faz nada */
         }
     }
 
@@ -288,17 +343,37 @@ public class MainActivity extends AppCompatActivity
         builder.setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Prefs.setBoolean(getBaseContext(), "login", false);
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                session.setLogin(false);
-                startActivity(intent);
-                finish();
+                finishFacebookSession();
+                finishSession();
                 return;
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void finishFacebookSession() {
+        if(AccessToken.getCurrentAccessToken() != null) {
+            new GraphRequest(AccessToken.getCurrentAccessToken(),
+                    "/me/permissions/",
+                    null,
+                    HttpMethod.DELETE,
+                    new GraphRequest.Callback() {
+                        @Override
+                        public void onCompleted(GraphResponse graphResponse) {
+                            LoginManager.getInstance().logOut();
+                            return;
+                        }
+                    }).executeAsync();
+        }
+    }
+
+    private void finishSession() {
+        Prefs.clearPreferences(getBaseContext());
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     public void addAtividade() {

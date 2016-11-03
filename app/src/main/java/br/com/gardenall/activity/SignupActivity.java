@@ -1,10 +1,11 @@
 package br.com.gardenall.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,21 +21,19 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import br.com.gardenall.R;
 import br.com.gardenall.domain.AppController;
-import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.SQLiteHandler;
-import br.com.gardenall.domain.SessionManager;
 import br.com.gardenall.domain.Variaveis;
+import br.com.gardenall.utils.NetworkUtils;
+import br.com.gardenall.utils.Prefs;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignupActivity extends Activity {
+public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     @InjectView(R.id.input_name) EditText inputFullName;
@@ -44,7 +43,6 @@ public class SignupActivity extends Activity {
     @InjectView(R.id.link_login) TextView _loginLink;
     private ProgressDialog pDialog;
     private SQLiteHandler db;
-    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,24 +50,17 @@ public class SignupActivity extends Activity {
         setContentView(R.layout.activity_signup_2);
         ButterKnife.inject(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Cadastro");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        // Session manager
-        session = new SessionManager(getApplicationContext());
-
         // SQLite database handler
         db = new SQLiteHandler(getApplicationContext());
-
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(SignupActivity.this,
-                    MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -78,7 +69,16 @@ public class SignupActivity extends Activity {
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    if(NetworkUtils.isNetworkAvailable(getApplicationContext())) {
+                        registerUser(name, email, password);
+                    } else {
+                        android.support.design.widget.Snackbar.make(findViewById(R.id.linearLayout),
+                                R.string.error_conexao_indisponivel,
+                                Snackbar.LENGTH_LONG)
+                                .setAction(R.string.ok, onClickSnackBar())
+                                .setActionTextColor(getBaseContext().getResources().getColor(R.color.colorLink))
+                                .show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Por favor, digite suas informações!", Toast.LENGTH_LONG)
@@ -90,8 +90,6 @@ public class SignupActivity extends Activity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -186,5 +184,15 @@ public class SignupActivity extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private View.OnClickListener onClickSnackBar() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /* Intent it = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                startActivity(it); */
+            }
+        };
     }
 }

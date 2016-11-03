@@ -22,7 +22,6 @@ package br.com.gardenall.activity;
     import android.widget.TextView;
 
     import br.com.gardenall.R;
-    import br.com.gardenall.domain.PrefManager;
 
 public class WelcomeActivity extends AppCompatActivity {
 

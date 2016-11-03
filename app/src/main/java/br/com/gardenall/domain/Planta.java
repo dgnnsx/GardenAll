@@ -19,8 +19,7 @@ public class Planta implements Parcelable {
     @SerializedName("url")
     private String urlImagem;
 
-    public Planta(){
-    }
+    public Planta(){}
 
     public long getId() {
         return id;
