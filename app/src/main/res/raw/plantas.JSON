@@ -3,6 +3,17 @@
 		"planta": [
 		{
 		"nomePlanta": "Alface",
+			"colheitaMin": "55",
+			"colheitaMax": "90",
+			"epocaSul": "ANO TODO",
+			"epocaSudeste": "ANO TODO",
+			"epocaCentroOeste": "ANO TODO",
+			"epocaNorte": "ANO TODO",
+			"epocaNordeste": "ANO TODO",
+			"receita": "Alface a holandesa, sopa de alface, bolo de alface",
+			"tempoSol":	"Boa luminosidade, preferencialmente com luz solar direta, mas e tolerante a sombra parcial.  MEIO SOL",
+			"frequenciaRega": "Deixar o solo sempre umido, mas sem que permaneca encharcado.",
+			"vitaminas": "A, calcio",
 		"urlPlanta": "https://lh6.googleusercontent.com/-n98QK-GK32A/TYke0cbz-pI/AAAAAAAAABU/-FWTG2nSPRM/s1600/alface-crespa.png"
 		},
 		{
