@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,11 +24,15 @@ public class PlantaDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists planta (_id integer primary key " +
-                "autoincrement, nomePlanta text, urlImagem text, favorito integer);");
+        db.execSQL("create table if not exists planta (_id integer primary key," +
+                " nomePlanta text, urlImagem text, favorito integer, colheitaMin text," +
+                " epocaSul text, epocaSudeste text, epocaCentroOeste text, epocaNorte text," +
+                " epocaNordeste text, sol text, regar text);");
 
-        db.execSQL("create table if not exists catalogo (_id integer primary key " +
-                "autoincrement, nomePlanta text, urlImagem text, favorito integer);");
+        db.execSQL("create table if not exists catalogo (_id integer primary key," +
+                " nomePlanta text, urlImagem text, favorito integer, colheitaMin text," +
+                " epocaSul text, epocaSudeste text, epocaCentroOeste text, epocaNorte text," +
+                " epocaNordeste text, sol text, regar text);");
     }
 
     @Override
@@ -40,21 +43,23 @@ public class PlantaDB extends SQLiteOpenHelper {
     }
 
     // Insere uma nova planta na lista do usuario, ou atualiza se já existe
-    public long save(Planta planta) {
-        long id = planta.getId();
+    public void save(Planta planta) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
+            values.put("_id", planta.getId());
             values.put("nomePlanta", planta.getNomePlanta());
             values.put("urlImagem", planta.getUrlImagem());
             values.put("favorito", planta.getFavorito());
-            id = (int) db.insertWithOnConflict(PLANTA_DB, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-            if(id == -1) {
-                String _id = String.valueOf(planta.getId());
-                String[] whereArgs = new String[]{_id};
-                db.update(PLANTA_DB, values, "_id=?", whereArgs);
-            }
-            return id;
+            values.put("colheitaMin", planta.getColheitaMin());
+            values.put("epocaSul", planta.getEpocaSul());
+            values.put("epocaSudeste", planta.getEpocaSudeste());
+            values.put("epocaCentroOeste", planta.getEpocaCentroOeste());
+            values.put("epocaNorte", planta.getEpocaNorte());
+            values.put("epocaNordeste", planta.getEpocaNordeste());
+            values.put("sol", planta.getSol());
+            values.put("regar", planta.getRegar());
+            db.insertWithOnConflict(PLANTA_DB, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         } finally {
             db.close();
         }
@@ -114,10 +119,18 @@ public class PlantaDB extends SQLiteOpenHelper {
             do {
                 Planta planta = new Planta();
                 // recupera os atributos de planta
-                planta.setId(c.getLong(c.getColumnIndex("_id")));
+                planta.setId(c.getInt(c.getColumnIndex("_id")));
                 planta.setNomePlanta(c.getString(c.getColumnIndex("nomePlanta")));
                 planta.setUrlImagem(c.getString(c.getColumnIndex("urlImagem")));
                 planta.setFavorito(c.getInt(c.getColumnIndex("favorito")));
+                planta.setColheitaMin(c.getString(c.getColumnIndex("colheitaMin")));
+                planta.setEpocaSul(c.getString(c.getColumnIndex("epocaSul")));
+                planta.setEpocaSudeste(c.getString(c.getColumnIndex("epocaSudeste")));
+                planta.setEpocaCentroOeste(c.getString(c.getColumnIndex("epocaCentroOeste")));
+                planta.setEpocaNordeste(c.getString(c.getColumnIndex("epocaNordeste")));
+                planta.setEpocaNorte(c.getString(c.getColumnIndex("epocaNorte")));
+                planta.setSol(c.getString(c.getColumnIndex("sol")));
+                planta.setRegar(c.getString(c.getColumnIndex("regar")));
                 plantas.add(planta);
             } while (c.moveToNext());
         }
@@ -126,10 +139,18 @@ public class PlantaDB extends SQLiteOpenHelper {
 
     // Faz a leitura dos atributos de planta
     private void read(Cursor c, Planta planta) {
-        planta.setId(c.getLong(c.getColumnIndex("_id")));
+        planta.setId(c.getInt(c.getColumnIndex("_id")));
         planta.setNomePlanta(c.getString(c.getColumnIndex("nomePlanta")));
         planta.setUrlImagem(c.getString(c.getColumnIndex("urlImagem")));
         planta.setFavorito(c.getInt(c.getColumnIndex("favorito")));
+        planta.setColheitaMin(c.getString(c.getColumnIndex("colheitaMin")));
+        planta.setEpocaSul(c.getString(c.getColumnIndex("epocaSul")));
+        planta.setEpocaSudeste(c.getString(c.getColumnIndex("epocaSudeste")));
+        planta.setEpocaCentroOeste(c.getString(c.getColumnIndex("epocaCentroOeste")));
+        planta.setEpocaNordeste(c.getString(c.getColumnIndex("epocaNordeste")));
+        planta.setEpocaNorte(c.getString(c.getColumnIndex("epocaNorte")));
+        planta.setSol(c.getString(c.getColumnIndex("sol")));
+        planta.setRegar(c.getString(c.getColumnIndex("regar")));
     }
 
     /*
@@ -140,9 +161,18 @@ public class PlantaDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
+            values.put("_id", planta.getId());
             values.put("nomePlanta", planta.getNomePlanta());
             values.put("urlImagem", planta.getUrlImagem());
             values.put("favorito", planta.getFavorito());
+            values.put("colheitaMin", planta.getColheitaMin());
+            values.put("epocaSul", planta.getEpocaSul());
+            values.put("epocaSudeste", planta.getEpocaSudeste());
+            values.put("epocaCentroOeste", planta.getEpocaCentroOeste());
+            values.put("epocaNorte", planta.getEpocaNorte());
+            values.put("epocaNordeste", planta.getEpocaNordeste());
+            values.put("sol", planta.getSol());
+            values.put("regar", planta.getRegar());
             String[] whereArgs = new String[]{planta.getNomePlanta()};
             // update planta set values = ... where _id=?
             db.update(CATALOGO_DB, values, "nomePlanta=?", whereArgs);
@@ -157,10 +187,18 @@ public class PlantaDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
+            values.put("_id", planta.getId());
             values.put("nomePlanta", planta.getNomePlanta());
             values.put("urlImagem", planta.getUrlImagem());
-            values.put("_id", planta.getId());
-            values.put("favorito", "");
+            values.put("favorito", planta.getFavorito());
+            values.put("colheitaMin", planta.getColheitaMin());
+            values.put("epocaSul", planta.getEpocaSul());
+            values.put("epocaSudeste", planta.getEpocaSudeste());
+            values.put("epocaCentroOeste", planta.getEpocaCentroOeste());
+            values.put("epocaNorte", planta.getEpocaNorte());
+            values.put("epocaNordeste", planta.getEpocaNordeste());
+            values.put("sol", planta.getSol());
+            values.put("regar", planta.getRegar());
             db.insert(CATALOGO_DB, "", values);
             return planta.getId();
            /* if(id != 0) {
@@ -250,10 +288,18 @@ public class PlantaDB extends SQLiteOpenHelper {
             do {
                 Planta planta = new Planta();
                 // recupera os atributos de planta
-                planta.setId(c.getLong(c.getColumnIndex("_id")));
+                planta.setId(c.getInt(c.getColumnIndex("_id")));
                 planta.setNomePlanta(c.getString(c.getColumnIndex("nomePlanta")));
                 planta.setUrlImagem(c.getString(c.getColumnIndex("urlImagem")));
                 planta.setFavorito(c.getInt(c.getColumnIndex("favorito")));
+                planta.setColheitaMin(c.getString(c.getColumnIndex("colheitaMin")));
+                planta.setEpocaSul(c.getString(c.getColumnIndex("epocaSul")));
+                planta.setEpocaSudeste(c.getString(c.getColumnIndex("epocaSudeste")));
+                planta.setEpocaCentroOeste(c.getString(c.getColumnIndex("epocaCentroOeste")));
+                planta.setEpocaNordeste(c.getString(c.getColumnIndex("epocaNordeste")));
+                planta.setEpocaNorte(c.getString(c.getColumnIndex("epocaNorte")));
+                planta.setSol(c.getString(c.getColumnIndex("sol")));
+                planta.setRegar(c.getString(c.getColumnIndex("regar")));
                 plantas.add(planta);
             } while (c.moveToNext());
         }
@@ -262,9 +308,17 @@ public class PlantaDB extends SQLiteOpenHelper {
 
     // Faz a leitura dos atributos de planta
     private void readOnCatalogo(Cursor c, Planta planta) {
-        planta.setId(c.getLong(c.getColumnIndex("_id")));
+        planta.setId(c.getInt(c.getColumnIndex("_id")));
         planta.setNomePlanta(c.getString(c.getColumnIndex("nomePlanta")));
         planta.setUrlImagem(c.getString(c.getColumnIndex("urlImagem")));
         planta.setFavorito(c.getInt(c.getColumnIndex("favorito")));
+        planta.setColheitaMin(c.getString(c.getColumnIndex("colheitaMin")));
+        planta.setEpocaSul(c.getString(c.getColumnIndex("epocaSul")));
+        planta.setEpocaSudeste(c.getString(c.getColumnIndex("epocaSudeste")));
+        planta.setEpocaCentroOeste(c.getString(c.getColumnIndex("epocaCentroOeste")));
+        planta.setEpocaNordeste(c.getString(c.getColumnIndex("epocaNordeste")));
+        planta.setEpocaNorte(c.getString(c.getColumnIndex("epocaNorte")));
+        planta.setSol(c.getString(c.getColumnIndex("sol")));
+        planta.setRegar(c.getString(c.getColumnIndex("regar")));
     }
 }

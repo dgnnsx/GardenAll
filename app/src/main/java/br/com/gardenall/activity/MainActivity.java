@@ -1,19 +1,13 @@
 package br.com.gardenall.activity;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,8 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +40,10 @@ import com.squareup.picasso.Picasso;
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.adapter.TabsAdapter;
-import br.com.gardenall.domain.AppController;
+import br.com.gardenall.domain.Atividade;
 import br.com.gardenall.domain.AtividadeDB;
 import br.com.gardenall.domain.AtividadeService;
 import br.com.gardenall.domain.PlantaDB;
-import br.com.gardenall.provider.SearchableProvider;
 import br.com.gardenall.utils.Prefs;
 import br.com.gardenall.domain.SQLiteHandler;
 
@@ -67,7 +58,6 @@ public class MainActivity extends AppCompatActivity
     private TabsAdapter adapter;
     private View mHeaderView;
     private SQLiteHandler db;
-    private boolean isValidNome, isValidAtividade;
     private ProfileTracker mProfileTracker;
     private Profile profile;
 
@@ -197,7 +187,8 @@ public class MainActivity extends AppCompatActivity
         switch (position) {
             case 0:
                 fab.setBackgroundTintList(ColorStateList.valueOf(Color
-                        .parseColor("#FF9900")));
+                        .parseColor("#ff8000")));
+                fab.setRippleColor(getResources().getColor(R.color.light_orange));
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -209,7 +200,8 @@ public class MainActivity extends AppCompatActivity
 
             case 1:
                 fab.setBackgroundTintList(ColorStateList.valueOf(Color
-                        .parseColor("#AFD2F8")));
+                        .parseColor("#0099cc")));
+                fab.setRippleColor(getResources().getColor(R.color.light_blue));
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -233,12 +225,10 @@ public class MainActivity extends AppCompatActivity
         int position = PlantasApplication.INDEX_OF_TAB;
         switch (position) {
             case 0:
-                //fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab.show();
                 break;
 
             case 1:
-                //fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLink)));
                 fab.show();
                 break;
 
@@ -283,18 +273,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_plantas, menu);
-        SearchView searchView;
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            searchView = (SearchView) menu.findItem(R.id.action_searchable).getActionView();
-        }
-        else{
-            MenuItem item = menu.findItem(R.id.action_searchable);
-            searchView = (SearchView) MenuItemCompat.getActionView(item);
-        }
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -305,14 +283,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_disconnect) {
             disconnect();
             return true;
-        } else if(id == R.id.action_delete){
-            SearchRecentSuggestions searchRecentSuggestions = new SearchRecentSuggestions(this,
-                    SearchableProvider.AUTHORITY,
-                    SearchableProvider.MODE);
-            searchRecentSuggestions.clearHistory();
-            Toast.makeText(this, "Pesquisas recentes removidas", Toast.LENGTH_SHORT).show();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -336,11 +307,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void disconnect(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.AlertDialogCustom));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.action_exit);
         builder.setMessage(R.string.action_sure_disconnect);
-
         builder.setNegativeButton(R.string.negative, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -392,12 +361,9 @@ public class MainActivity extends AppCompatActivity
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
         builder.setTitle("Adicionar atividade");
-        builder.setIcon(R.drawable.ic_alarm_add_black);
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.dialog_add_atividade, null);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_add_atividade, null);
         //aqui o conteudo
         final Button button = (Button) layout.findViewById(R.id.botao_Add);
-        final TextInputLayout nomeAtividadeLayout = (TextInputLayout) layout.findViewById(R.id.nomeAtividadeLayout);
-        final TextInputLayout descAtividadeLayout = (TextInputLayout) layout.findViewById(R.id.descAtividadeLayout);
         final EditText descAtividade = (EditText) layout.findViewById(R.id.descAtividade);
         final EditText nomeAtividade = (EditText) layout.findViewById(R.id.nomeAtividade);
         builder.setView(layout);
@@ -405,37 +371,42 @@ public class MainActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (nomeAtividade.length() == 0) {
-                    isValidNome = false;
-                    nomeAtividadeLayout.setError("Dê um nome para identificar sua atividade");
-                } else {
-                    isValidNome = true;
-                    nomeAtividadeLayout.setError(null);
-                }
-
-                if (descAtividade.length() == 0) {
-                    isValidAtividade = false;
-                    descAtividadeLayout.setError("Digite uma breve descrição da atividade");
-                } else {
-                    isValidAtividade = true;
-                    descAtividadeLayout.setError(null);
-                }
-
-                if(isValidNome && isValidAtividade) {
-                    AppController.Atividade at = new AppController.Atividade();
-                    at.setTitulo(nomeAtividade.getText().toString());
-                    at.setDescricao(descAtividade.getText().toString());
+                if(descAtividade.getText().toString().length() > 0 &&
+                        nomeAtividade.getText().toString().length() > 0) {
+                    Atividade at = new Atividade();
+                    at.setTitulo(nomeAtividade.getText().toString().trim());
+                    at.setDescricao(descAtividade.getText().toString().trim());
                     AtividadeDB db = new AtividadeDB(getBaseContext());
-                    AppController.Atividade at2 = db.findByNome(at.getTitulo());
+                    Atividade at2 = db.findByNome(at.getTitulo());
                     if(at2 == null) {
+                        if(getFragmentRefreshListener() != null) {
+                            getFragmentRefreshListener().onRefresh(at);
+                        }
                         AtividadeService.saveAtividade(getBaseContext(), at);
                     } else {
                         Toast.makeText(getBaseContext(), "Atividade já salva na lista do usuário!", Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
+                } else {
+                    Toast.makeText(getBaseContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         dialog.show();
+    }
+
+    /* Interface para atualizacao da lista de atividades (add) */
+    private FragmentRefreshListener fragmentRefreshListener;
+
+    public interface FragmentRefreshListener{
+        void onRefresh(Atividade atividade);
+    }
+
+    public FragmentRefreshListener getFragmentRefreshListener() {
+        return fragmentRefreshListener;
+    }
+
+    public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) {
+        this.fragmentRefreshListener = fragmentRefreshListener;
     }
 }

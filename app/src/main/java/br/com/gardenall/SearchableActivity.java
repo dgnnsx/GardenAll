@@ -64,7 +64,7 @@ public class SearchableActivity extends AppCompatActivity {
         }
         else{
             try {
-                mList = PlantaService.getPlantas(this, false);
+                mList = PlantaService.getCatalogoDePlantas(this);
                 mListAux = new ArrayList<>();
             }
             catch (IOException e) {
@@ -92,8 +92,8 @@ public class SearchableActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
-    public void handleIntent(Intent intent){
-        if(Intent.ACTION_SEARCH.equalsIgnoreCase(intent.getAction())){
+    public void handleIntent(Intent intent) {
+        if(Intent.ACTION_SEARCH.equalsIgnoreCase(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             toolbar.setTitle(query);
             searchPlantas(query);
@@ -127,8 +127,8 @@ public class SearchableActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("mList", (ArrayList<Planta>) mList);
-        outState.putParcelableArrayList("mListAux", (ArrayList<Planta>) mListAux);
+        outState.putParcelableArrayList("mList", mList);
+        outState.putParcelableArrayList("mListAux", mListAux);
         super.onSaveInstanceState(outState);
     }
 

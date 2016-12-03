@@ -25,8 +25,11 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
+import br.com.gardenall.Callback.CallbackPlantas;
 import br.com.gardenall.PlantasApplication;
 import br.com.gardenall.R;
 import br.com.gardenall.activity.PlantaActivity;
@@ -35,6 +38,7 @@ import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
 import br.com.gardenall.domain.PlantaService;
 import br.com.gardenall.domain.SQLiteHandler;
+import br.com.gardenall.utils.NetworkUtils;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -66,6 +70,12 @@ public class PlantasFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onResume() {
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,6 +92,21 @@ public class PlantasFragment extends Fragment {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
                 R.color.refresh_progress_2,
                 R.color.refresh_progress_3);
+
+        /* Interface para receber o resultado do FAB imediatamente e atualizar a lista de plantas */
+        CallbackPlantas.setFragmentRefreshListener(new CallbackPlantas.FragmentRefreshListener() {
+            @Override
+            public void onRefresh(Planta p) {
+                plantas.add(p);
+                Collections.sort(plantas, new Comparator<Planta>() {
+                    @Override
+                    public int compare(Planta p1, Planta p2) {
+                        return p1.getNomePlanta().compareTo(p2.getNomePlanta());
+                    }
+                });
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
         return view;
     }
 
@@ -213,35 +238,39 @@ public class PlantasFragment extends Fragment {
                 if(item.getItemId() == R.id.action_remove){
                     PlantaDB db = new PlantaDB(getContext());
                     try{
-                        for(Planta p : selectedPlantas){
-                            PlantaService.deletePlantaWeb(p.getId(), user.get("email"));
-                            db.delete(p); // Deleta a planta do banco
-                            plantas.remove(p); // remove da lista
+                        if (NetworkUtils.isNetworkAvailable(getApplicationContext())) { /* Internet disponivel */
+                            for(Planta p : selectedPlantas) {
+                                PlantaService.deletePlantaWeb(p.getId(), user.get("email"));
+                                db.delete(p); // Deleta a planta do banco
+                                plantas.remove(p); // remove da lista
+                            }
+                            if(selectedPlantas.size() == 1) {
+                                Snackbar.make(mRecyclerView, "Planta excluída com sucesso", Snackbar.LENGTH_LONG)
+                                        .setAction("Ok", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {}
+                                        })
+                                        .setActionTextColor(getContext().getResources().getColor(R.color.colorLink))
+                                        .show();
+                            } else if(selectedPlantas.size() > 1) {
+                                Snackbar.make(mRecyclerView, "Plantas excluídas com sucesso", Snackbar.LENGTH_LONG)
+                                        .setAction("Ok", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {}
+                                        })
+                                        .setActionTextColor(getContext().getResources().getColor(R.color.colorLink))
+                                        .show();
+                            }
+                        } else { /* Internet indisponivel */
+                            android.support.design.widget.Snackbar.make(mSwipeRefreshLayout,
+                                    R.string.error_conexao_indisponivel,
+                                    Snackbar.LENGTH_LONG)
+                                    .setAction(R.string.ok, onClickSnackBar())
+                                    .setActionTextColor(getContext().getResources().getColor(R.color.colorLink))
+                                    .show();
                         }
                     } finally {
                         db.close();
-                    }
-                    if(selectedPlantas.size() == 1) {
-                        Snackbar.make(mRecyclerView, "Planta excluída com sucesso", Snackbar.LENGTH_LONG)
-                                .setAction("Ok", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                    }
-                                })
-                                .setActionTextColor(getContext().getResources().getColor(R.color.colorLink))
-                                .show();
-                    }
-                    else if(selectedPlantas.size() > 1) {
-                        Snackbar.make(mRecyclerView, "Plantas excluídas com sucesso", Snackbar.LENGTH_LONG)
-                                .setAction("Ok", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                    }
-                                })
-                                .setActionTextColor(getContext().getResources().getColor(R.color.colorLink))
-                                .show();
                     }
                 }
                 // Encerra o action mode
@@ -288,5 +317,15 @@ public class PlantasFragment extends Fragment {
             }
         }
         return list;
+    }
+
+    private View.OnClickListener onClickSnackBar() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /* Intent it = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                startActivity(it); */
+            }
+        };
     }
 }

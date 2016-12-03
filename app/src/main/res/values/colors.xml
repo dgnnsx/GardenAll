@@ -3,15 +3,15 @@
     <color name="colorPrimary">#3AAE68</color>
     <color name="colorPrimaryDark">#1EA053</color>
     <color name="colorAccent">	#C28B4D</color>
-    <color name="control_highlight">#DCEDC8</color>
+    <color name="control_highlight">#F5F7F7</color>
     <color name="error">#BD1644</color>
     <color name="overlay">#80000000</color>
     <!-- Outras cores -->
     <color name="transparent">#0000</color>
     <color name="white">#fff</color>
     <color name="black">#000000</color>
-    <color name="blue">#00f</color>
-    <color name="light_blue">#87CEFF</color>
+    <color name="blue">#0099cc</color>
+    <color name="light_blue">#66d9ff</color>
     <color name="red">#f00</color>
     <color name="green">#0f0</color>
     <color name="gray">#eee</color>
@@ -20,7 +20,9 @@
     <color name="refresh_progress_2">#99CC00</color>
     <color name="refresh_progress_3">#CC0000</color>
     <color name="red_button">#CD5C5C</color>
-    <color name="orange">#FFA500</color>
+    <color name="light_orange">#ffa64d</color>
+    <color name="orange">#ff8000</color>
+
     <color name="colorLink">#1ea4f7</color>
     <color name="colorCAB">#AED581</color>
 

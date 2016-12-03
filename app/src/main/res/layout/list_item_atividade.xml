@@ -16,11 +16,25 @@
         android:background="@color/colorCAB"
         android:padding="15dp">
 
-        <TextView
-            android:id="@+id/text1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageButton
+                android:id="@+id/btnExcluir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear_white"
+                android:background="?android:attr/selectableItemBackground" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text2"
@@ -66,7 +80,7 @@
             <Button
                 android:id="@+id/btnLeft"
                 android:text="Alarme"
-                android:backgroundTint="@color/oil"
+                style="@style/CardView.Dark"
                 android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -83,6 +97,5 @@
                 android:visibility="invisible"
                 android:text="Feito!"></Button>
         </LinearLayout>
-
     </LinearLayout>
 </android.support.v7.widget.CardView>

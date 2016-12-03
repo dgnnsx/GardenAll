@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +30,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import br.com.gardenall.R;
+import br.com.gardenall.activity.MainActivity;
 import br.com.gardenall.adapter.AtividadesAdapter;
-import br.com.gardenall.domain.AppController;
+import br.com.gardenall.domain.Atividade;
+import br.com.gardenall.domain.AtividadeDB;
 import br.com.gardenall.domain.AtividadeService;
 import br.com.gardenall.extra.AlarmReceiver;
 import br.com.gardenall.utils.AlarmUtil;
@@ -39,13 +42,12 @@ public class AtividadesFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
         DialogInterface.OnCancelListener {
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private static RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private ArrayList<AppController.Atividade> atividades;
-    private AppController.Atividade atividade;
+    private ArrayList<Atividade> atividades;
+    private Atividade atividade;
     private int year, month, day, hour, minute;
-    private boolean isProgrammed;
+    private boolean isProgrammed, isConfirmed = false;
     TextView textView;
     Button btn;
 
@@ -53,7 +55,7 @@ public class AtividadesFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        taskAtividades(false);
+        taskAtividades();
     }
 
     @Nullable
@@ -66,30 +68,23 @@ public class AtividadesFragment extends Fragment
         // Linear Layout Manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        // Swipe Refresh Layout
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(onRefreshListener(view));
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
-                R.color.refresh_progress_2,
-                R.color.refresh_progress_3);
+
+        /* Interface para receber o resultado do FAB imediatamente e atualizar a lista de atividades */
+        ((MainActivity)getActivity()).setFragmentRefreshListener(new MainActivity.FragmentRefreshListener() {
+            @Override
+            public void onRefresh(Atividade atividade) {
+                atividades.add(atividade);
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+
         return view;
     }
 
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener(final View view) {
-        return new SwipeRefreshLayout.OnRefreshListener() {
-            // Atualiza ao fazer o gesto Pull to Refresh
-            @Override
-            public void onRefresh() {
-                taskAtividades(true);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        };
-    }
-
-    private void taskAtividades(boolean refresh){
+    private void taskAtividades(){
         // Busca as atividades
         try {
-            this.atividades = AtividadeService.getAtividades(getContext(), refresh);
+            this.atividades = AtividadeService.getAtividades(getContext());
         } catch (IOException e) {
             Toast.makeText(getContext(), "Erro ao ler dados.", Toast.LENGTH_SHORT).show();
         }
@@ -142,6 +137,7 @@ public class AtividadesFragment extends Fragment
             @Override
             public void onClickBtnRight(Button button, int idx) {
                 if(isProgrammed) {
+                    isConfirmed = true;
                     textView.setText(
                             (hour < 10 ? "0"+hour : hour)+"h"+
                             (minute < 10 ? "0"+minute : minute));
@@ -152,13 +148,23 @@ public class AtividadesFragment extends Fragment
             }
 
             @Override
-            public void onSwitchTurnedOn(View view, int idx) {
-                agendar(view);
+            public void onSwitchTurnedOn(Switch switcher, int idx) {
+                if(!isConfirmed) {
+                    Toast.makeText(getContext(), "Programe um horário antes!", Toast.LENGTH_SHORT).show();
+                    switcher.setChecked(false);
+                } else {
+                    agendar(switcher);
+                }
             }
 
             @Override
             public void onSwitchTurnedOff(View view, int idx) {
                 cancelar(view);
+            }
+
+            @Override
+            public void onClickExcluir(int idx) {
+                excluirAtividade(idx);
             }
         };
     }
@@ -201,6 +207,7 @@ public class AtividadesFragment extends Fragment
     public void onCancel(DialogInterface dialog) {
         year = month = day = hour = minute = 0;
         isProgrammed = false;
+        isConfirmed = false;
         btn.setVisibility(View.INVISIBLE);
         textView.setText("");
         updateAtividade("");
@@ -247,5 +254,32 @@ public class AtividadesFragment extends Fragment
     private void updateAtividade(String s) {
         atividade.setHorario(s);
         AtividadeService.updateAtividade(getContext(), atividade);
+    }
+
+    public void excluirAtividade(final int idx){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.action_remove_activity);
+        builder.setMessage(R.string.action_sure_remove_activity);
+
+        builder.setNegativeButton(R.string.negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                return;
+            }
+        });
+        builder.setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                atividade = atividades.get(idx);
+                AtividadeDB db = new AtividadeDB(getContext());
+                db.delete(atividade);
+                atividades.remove(idx);
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+                Toast.makeText(getContext(), "Atividade excluída com sucesso!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

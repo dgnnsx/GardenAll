@@ -1,92 +1,266 @@
 ﻿{
 	"plantas": {
 		"planta": [
-		{
-		"_id": "1",
-		"nomePlanta": "Alface",
-			"colheitaMin": "55",
-			"colheitaMax": "90",
-			"epocaSul": "ANO TODO",
-			"epocaSudeste": "ANO TODO",
-			"epocaCentroOeste": "ANO TODO",
-			"epocaNorte": "ANO TODO",
-			"epocaNordeste": "ANO TODO",
-			"receita": "Alface a holandesa, sopa de alface, bolo de alface",
-			"tempoSol":	"Boa luminosidade, preferencialmente com luz solar direta, mas e tolerante a sombra parcial.  MEIO SOL",
-			"frequenciaRega": "Deixar o solo sempre umido, mas sem que permaneca encharcado.",
-			"vitaminas": "A, calcio",
-		"urlPlanta": "https://lh6.googleusercontent.com/-n98QK-GK32A/TYke0cbz-pI/AAAAAAAAABU/-FWTG2nSPRM/s1600/alface-crespa.png"
-		},
-		{
-		"_id": "2",
-		"nomePlanta": "Agrião",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/barbarea_v001.jpg?itok=9g1gpX3z"
-		},
-		{
-		"_id": "3",
-		"nomePlanta": "Feijão",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/feijao001.jpg?itok=mI9H2g_Q"
-		},
-		{
-		"_id": "4",
-		"nomePlanta": "Louro",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/louro001.jpg?itok=mpE15HXQ"
-		},
-		{
-		"_id": "5",
-		"nomePlanta": "Cebola-do-Egito",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/cebolaegp001.jpg?itok=NHwNtwNp"
-		},
-		{
-		"_id": "6",
-		"nomePlanta": "Girassol",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/girassol001.jpg?itok=aoYqrDFO"
-		},
-		{
-		"_id": "7",
-		"nomePlanta": "Manjericão-sagrado",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/msagrado001.jpg?itok=uS_1J9qg"
-		},
-		{
-		"_id": "8",
-		"nomePlanta": "Açafrão",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/acafrao001.jpg?itok=7pKjJhgg"
-		},
-		{
-		"_id": "9",
-		"nomePlanta": "Oxalis (falso trevo)",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/oxalis001.jpg?itok=1OZ23HpI"
-		},
-		{
-		"_id": "10",
-		"nomePlanta": "Camomila",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/camomila001.jpg?itok=rQCN65OX"
-		},
-		{
-		"_id": "11",
-		"nomePlanta": "Arruda",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/arruda001.jpg?itok=BsJvvcFr"
-		},
-		{
-		"_id": "12",
-		"nomePlanta": "Pimenta-do-reino",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/pimentapreta0001.jpg?itok=JGj-yBJh"
-		},
-		{
-		"_id": "13",
-		"nomePlanta": "Jambu",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/jambu0001.jpg?itok=7hPdCo3I"
-		},
-		{
-		"_id": "14",
-		"nomePlanta": "Gengibre",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/gengibre001.jpg?itok=2h5iADj3"
-		},
-		{
-		"_id": "15",
-		"nomePlanta": "Sálvia",
-		"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/salvia001.jpg?itok=zZ51PUA4"
-		}
+			{
+				"_id": "1",
+				"nomePlanta": "Agrião",
+				"colheitaMin": "50-70",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Boa luminosidade, preferencialmente com luz solar direta, mas é tolerante a sombra parcial",
+				"regar": "Necessita de terra bem úmida",
+				"urlPlanta": "http://hortas.info/sites/default/files/styles/large/public/field/image/barbarea_v001.jpg?itok=9g1gpX3z"
+			},
+			{
+				"_id": "2",
+				"nomePlanta": "Alface",
+				"colheitaMin": "55",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Boa luminosidade, preferencialmente com luz solar direta, mas é tolerante a sombra parcial",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://lh6.googleusercontent.com/-n98QK-GK32A/TYke0cbz-pI/AAAAAAAAABU/-FWTG2nSPRM/s1600/alface-crespa.png"
+			},
+			{
+				"_id": "3",
+				"nomePlanta": "Batata",
+				"colheitaMin": "50",
+				"epocaSul": "AGO-DEZ",
+				"epocaSudeste": "AGO-DEZ",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Boa luminosidade para crescer bem, com pelo menos algumas horas de luz solar direta diariamente. Em regiões de clima quente, a batata pode ser cultivada com sombra parcial",
+				"regar": "Irrigue de forma a manter o solo sempre levemente úmido. Suspenda a irrigação nas duas últimas semanas antes da colheita",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2014/08/06/20/32/potatoes-411975_960_720.jpg"
+			},
+			{
+				"_id": "4",
+				"nomePlanta": "Berinjela",
+				"colheitaMin": "65-80",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Irrigue de forma a manter o solo sempre levemente úmido. Suspenda a irrigação nas duas últimas semanas antes da colheita",
+				"regar": "Irrigue com frequência para que o solo seja mantido úmido, porém sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/10/01/14/10/eggplant-1707629_960_720.jpg"
+			},
+			{
+				"_id": "5",
+				"nomePlanta": "Beterraba",
+				"colheitaMin": "65-80",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Pelo menos algumas horas de sol direto diariamente",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/09/01/20/09/beet-1637437_960_720.jpg"
+			},
+			{
+				"_id": "6",
+				"nomePlanta": "Cebolinha",
+				"colheitaMin": "100-120",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Necessita de luz solar direta ao menos por algumas horas diariamente",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/03/28/22/46/chives-1287096_960_720.jpg"
+			},
+			{
+				"_id": "7",
+				"nomePlanta": "Cenoura",
+				"colheitaMin": "8-5",
+				"epocaSul": "OUT-MAR",
+				"epocaSudeste": "OUT-MAR",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Cresce melhor em condições de alta luminosidade, com sol direto, mas tolera crescer na sombra desde que a luminosidade seja boa",
+				"regar": "Manter o solo levemente úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2015/03/14/14/00/carrots-673184_960_720.jpg"
+			},
+			{
+				"_id": "8",
+				"nomePlanta": "Chicória",
+				"colheitaMin": "90-100",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Sol direto ou na sombra parcial, desde que haja uma boa luminosidade",
+				"regar": "Irrigação com frequência para que o solo não resseque",
+				"urlPlanta": "http://media.tocadoverde.com.br/media/catalog/product/cache/1/image/1800x/040ec09b1e35df139433887a97daa66f/c/h/chicoria-crespa-2.jpg"
+			},
+			{
+				"_id": "9",
+				"nomePlanta": "Couve",
+				"colheitaMin": "100-120",
+				"epocaSul": "FEV-NOV",
+				"epocaSudeste": "FEV-NOV",
+				"epocaCentroOeste": "MAR-MAI",
+				"epocaNorte": "MAR-MAI",
+				"epocaNordeste": "MAR-MAI",
+				"sol": "Alta luminosidade, com sol direto. Nas estações mais quentes do ano, prover sombra parcial pode ser benéfico para as plantas",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/04/22/04/07/cabbage-1345082_960_720.jpg"
+			},
+			{
+				"_id": "10",
+				"nomePlanta": "Espinafre",
+				"colheitaMin": "40-120",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "MAR-JUL",
+				"epocaCentroOeste": "MAR-JUL",
+				"epocaNorte": "MAR-JUL",
+				"epocaNordeste": "MAR-JUL",
+				"sol": "Luz solar direta ou em sombra parcial",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/07/16/16/30/spinach-1522283_960_720.jpg"
+			},
+			{
+				"_id": "11",
+				"nomePlanta": "Feijão vagem",
+				"colheitaMin": "60",
+				"epocaSul": "AGO-MAR",
+				"epocaSudeste": "ABR-JUN",
+				"epocaCentroOeste": "ABR-JUN",
+				"epocaNorte": "ABR-JUN",
+				"epocaNordeste": "ABR-JUN",
+				"sol": "Alta luminosidade, com luz solar direta pelo menos algumas horas por dia",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/08/07/17/44/beans-1576700_960_720.jpg"
+			},
+			{
+				"_id": "12",
+				"nomePlanta": "Hortelã",
+				"colheitaMin": "90",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Lugares ensolarados ou em sombra parcial",
+				"regar": "Irrigue de forma a manter o solo sempre úmido. O ideal é que o solo nunca seque durante o ciclo de crescimento das plantas",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/07/28/19/52/mint-1549247_960_720.jpg"
+			},
+			{
+				"_id": "13",
+				"nomePlanta": "Jiló",
+				"colheitaMin": "110",
+				"epocaSul": "AGO-FEV",
+				"epocaSudeste": "AGO-FEV",
+				"epocaCentroOeste": "AGO-FEV",
+				"epocaNorte": "MAR-OUT",
+				"epocaNordeste": "MAR-OUT",
+				"sol": "Alta luminosidade e deve receber luz solar direta ao menos por algumas horas diariamente",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://worldcrops.org/sites/worldcrops.org/files/crops/Harvest-7-29-05-Raquel-060.jpg"
+			},
+			{
+				"_id": "14",
+				"nomePlanta": "Milho",
+				"colheitaMin": "90",
+				"epocaSul": "AGO-SET",
+				"epocaSudeste": "OUT-NOV",
+				"epocaCentroOeste": "OUT-NOV",
+				"epocaNorte": "NOV-DEZ",
+				"epocaNordeste": "JAN-FEV",
+				"sol": "Alta luminosidade e deve receber luz solar direta ao menos por algumas horas diariamente",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado. Quando as espigas estão bem desenvolvidas, a irrigação não é mais necessária",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2015/05/26/17/42/pop-corn-785074_960_720.jpg"
+			},
+			{
+				"_id": "15",
+				"nomePlanta": "Morango",
+				"colheitaMin": "60-80",
+				"epocaSul": "ABR-MAI",
+				"epocaSudeste": "ABR-MAI",
+				"epocaCentroOeste": "ABR-MAI",
+				"epocaNorte": "ABR-MAI",
+				"epocaNordeste": "ABR-MAI",
+				"sol": "Boa luminosidade, com pelo menos algumas horas diárias de luz solar direta",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2013/04/02/21/47/strawberries-99551_960_720.jpg"
+			},
+			{
+				"_id": "16",
+				"nomePlanta": "Pepino",
+				"colheitaMin": "7-5",
+				"epocaSul": "AGO-MAR",
+				"epocaSudeste": "AGO-MAR",
+				"epocaCentroOeste": "AGO-MAR",
+				"epocaNorte": "MAR-OUT",
+				"epocaNordeste": "MAR-OUT",
+				"sol": "Alta luminosidade, com luz solar direta pelo menos algumas horas por dia",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2015/07/17/13/44/cucumbers-849269_960_720.jpg"
+			},
+			{
+				"_id": "17",
+				"nomePlanta": "Pimentão",
+				"colheitaMin": "100",
+				"epocaSul": "AGO-JAN",
+				"epocaSudeste": "AGO-JAN",
+				"epocaCentroOeste": "OUT-JAN",
+				"epocaNorte": "OUT-JAN",
+				"epocaNordeste": "OUT-JAN",
+				"sol": "Alta luminosidade, com sol direto",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2014/10/22/21/54/sweet-peppers-499068_960_720.jpg"
+			},
+			{
+				"_id": "18",
+				"nomePlanta": "Quiabo",
+				"colheitaMin": "70",
+				"epocaSul": "AGO-JAN",
+				"epocaSudeste": "AGO-JAN",
+				"epocaCentroOeste": "AGO-FEV",
+				"epocaNorte": "MAR-OUT",
+				"epocaNordeste": "MAR-OUT",
+				"sol": "Boa luminosidade, com pelo menos algumas horas diárias de luz solar direta",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado. Plantas adultas são tolerantes a períodos de seca",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/05/11/19/52/okra-1386365_960_720.jpg"
+			},
+			{
+				"_id": "19",
+				"nomePlanta": "Salsa",
+				"colheitaMin": "60-80",
+				"epocaSul": "ANO TODO",
+				"epocaSudeste": "ANO TODO",
+				"epocaCentroOeste": "ANO TODO",
+				"epocaNorte": "ANO TODO",
+				"epocaNordeste": "ANO TODO",
+				"sol": "Cultivada em lugares ensolarados ou em sombra parcial",
+				"regar": "Deixar o solo sempre bem irrigado",
+				"urlPlanta": "http://t1.uccdn.com/pt/images/5/7/4/img_2475_ins_11918_600.jpg"
+			},
+			{
+				"_id": "20",
+				"nomePlanta": "Tomate",
+				"colheitaMin": "90",
+				"epocaSul": "AGO-FEV",
+				"epocaSudeste": "AGO-FEV",
+				"epocaCentroOeste": "MAI-OUT",
+				"epocaNorte": "MAI-OUT",
+				"epocaNordeste": "MAI-OUT",
+				"sol": "Alta luminosidade, com sol direto pelo menos algumas horas por dia",
+				"regar": "Deixar o solo sempre úmido, mas sem que permaneça encharcado",
+				"urlPlanta": "https://cdn.pixabay.com/photo/2016/09/11/23/52/tomatoes-1662759_960_720.jpg"
+			}
 		]
 	}
 }

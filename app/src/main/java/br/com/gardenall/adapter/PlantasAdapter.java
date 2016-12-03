@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import br.com.gardenall.R;
+import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
 
@@ -62,7 +63,7 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.ViewHold
             holder.separador.setVisibility(View.VISIBLE);
 
         // Faz o download da foto e mostra o ProgressBar
-        Picasso.with(context).load(planta.getUrlImagem()).noFade().into(holder.image,
+        Picasso.with(context).load(AppController.imagens.get(planta.getId() - 1)).noFade().into(holder.image,
                 new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {

@@ -13,19 +13,27 @@ public class Planta implements Parcelable {
     private int selected;
 
     @SerializedName("id_p")
-    private long id;
+    private int id;
     @SerializedName("nome")
     private String nomePlanta;
     @SerializedName("url")
     private String urlImagem;
+    private String colheitaMin;
+    private String epocaSul;
+    private String epocaSudeste;
+    private String epocaCentroOeste;
+    private String epocaNorte;
+    private String epocaNordeste;
+    private String sol;
+    private String regar;
 
-    public Planta(){}
+    public Planta() {}
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,11 +76,83 @@ public class Planta implements Parcelable {
         return favorito;
     }
 
+    public String getColheitaMin() {
+        return colheitaMin;
+    }
+
+    public void setColheitaMin(String colheitaMin) {
+        this.colheitaMin = colheitaMin;
+    }
+
+    public String getEpocaSul() {
+        return epocaSul;
+    }
+
+    public void setEpocaSul(String epocaSul) {
+        this.epocaSul = epocaSul;
+    }
+
+    public String getEpocaSudeste() {
+        return epocaSudeste;
+    }
+
+    public void setEpocaSudeste(String epocaSudeste) {
+        this.epocaSudeste = epocaSudeste;
+    }
+
+    public String getEpocaCentroOeste() {
+        return epocaCentroOeste;
+    }
+
+    public void setEpocaCentroOeste(String epocaCentroOeste) {
+        this.epocaCentroOeste = epocaCentroOeste;
+    }
+
+    public String getEpocaNorte() {
+        return epocaNorte;
+    }
+
+    public void setEpocaNorte(String epocaNorte) {
+        this.epocaNorte = epocaNorte;
+    }
+
+    public String getEpocaNordeste() {
+        return epocaNordeste;
+    }
+
+    public void setEpocaNordeste(String epocaNordeste) {
+        this.epocaNordeste = epocaNordeste;
+    }
+
+    public String getSol() {
+        return sol;
+    }
+
+    public void setSol(String sol) {
+        this.sol = sol;
+    }
+
+    public String getRegar() {
+        return regar;
+    }
+
+    public void setRegar(String regar) {
+        this.regar = regar;
+    }
+
     // Parcelable
     public Planta(Parcel parcel){
-        setId(parcel.readLong());
-        setNomePlanta(parcel.readString());
-        setUrlImagem(parcel.readString());
+        id = parcel.readInt();
+        nomePlanta = parcel.readString();
+        urlImagem = parcel.readString();
+        colheitaMin = parcel.readString();
+        epocaSul = parcel.readString();
+        epocaSudeste = parcel.readString();
+        epocaCentroOeste = parcel.readString();
+        epocaNorte = parcel.readString();
+        epocaNordeste = parcel.readString();
+        sol = parcel.readString();
+        regar = parcel.readString();
     }
 
     @Override
@@ -82,9 +162,17 @@ public class Planta implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(getId());
-        dest.writeString(getNomePlanta());
-        dest.writeString(getUrlImagem());
+        dest.writeInt(id);
+        dest.writeString(nomePlanta);
+        dest.writeString(urlImagem);
+        dest.writeString(colheitaMin);
+        dest.writeString(epocaSul);
+        dest.writeString(epocaSudeste);
+        dest.writeString(epocaCentroOeste);
+        dest.writeString(epocaNordeste);
+        dest.writeString(epocaNorte);
+        dest.writeString(sol);
+        dest.writeString(regar);
     }
 
     public static final Parcelable.Creator<Planta> CREATOR = new Parcelable.Creator<Planta>(){

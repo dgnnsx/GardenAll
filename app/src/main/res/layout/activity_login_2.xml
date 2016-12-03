@@ -15,11 +15,11 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@mipmap/logotipo"
+        <ImageView android:src="@mipmap/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:id="@+id/logo"/>
 
         <EditText
@@ -71,7 +71,7 @@
         <ImageButton
             android:layout_marginTop="10dp"
             android:id="@+id/btn_fb_login"
-            android:background="@mipmap/facebook"
+            android:background="@drawable/facebook"
             android:scaleType="fitXY"
             android:layout_height="80dp"
             android:layout_width="80dp"

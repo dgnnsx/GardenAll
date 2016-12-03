@@ -7,8 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+
+import br.com.gardenall.R;
+
 public class AppController extends Application {
 
+    public static ArrayList<Integer> imagens;
     public static final String TAG = AppController.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
@@ -19,6 +24,8 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        imagens = new ArrayList<>();
+        setupImagens();
     }
 
     public static synchronized AppController getInstance() {
@@ -31,6 +38,33 @@ public class AppController extends Application {
         }
 
         return mRequestQueue;
+    }
+
+    private void setupImagens() {
+        imagens.add(R.drawable.agriao);
+        imagens.add(R.drawable.alface);
+        imagens.add(R.drawable.batata);
+        imagens.add(R.drawable.beringela);
+        imagens.add(R.drawable.beterraba);
+        imagens.add(R.drawable.cebolinha);
+        imagens.add(R.drawable.cenoura);
+        imagens.add(R.drawable.chicoria);
+        imagens.add(R.drawable.couve);
+        imagens.add(R.drawable.espinafre);
+        imagens.add(R.drawable.vagem);
+        imagens.add(R.drawable.hortela);
+        imagens.add(R.drawable.jilo);
+        imagens.add(R.drawable.milho);
+        imagens.add(R.drawable.morango);
+        imagens.add(R.drawable.pepino);
+        imagens.add(R.drawable.pimentao);
+        imagens.add(R.drawable.quiabo);
+        imagens.add(R.drawable.salsa);
+        imagens.add(R.drawable.tomate);
+    }
+
+    public ArrayList<Integer> getImagens() {
+        return imagens;
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
@@ -46,60 +80,6 @@ public class AppController extends Application {
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
-        }
-    }
-
-    /**
-     * Created by diego on 30/08/16.
-     */
-
-    public static class Atividade {
-        private long id;
-        private String titulo;
-        private String descricao;
-        private String horario;
-        private static boolean status;
-
-        public Atividade(){}
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getTitulo(){
-            return titulo;
-        }
-
-        public void setTitulo(String titulo){
-            this.titulo = titulo;
-        }
-
-        public String getDescricao(){
-            return descricao;
-        }
-
-        public void setDescricao(String subTitulo){
-            this.descricao = subTitulo;
-        }
-
-        public String getHorario(){
-            return horario;
-        }
-
-        public void setHorario(String horario){
-            this.horario = horario;
-        }
-
-        public boolean getStatus(){
-            return status;
-        }
-
-        public void changeStatus(){
-            status = !status;
         }
     }
 }

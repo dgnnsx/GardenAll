@@ -16,6 +16,7 @@ public class PlantasApplication extends Application {
     private static final String TAG = "PlantasApplication";
     private static PlantasApplication instance = null;
 
+
     public static ActionMode ACTION_MODE;
     public static int INDEX_OF_TAB;
     public static List<Planta> tempPlanta = new ArrayList<>();

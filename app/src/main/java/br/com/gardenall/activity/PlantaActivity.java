@@ -7,14 +7,15 @@ package br.com.gardenall.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
@@ -23,10 +24,14 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 import br.com.gardenall.R;
+import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaDB;
 import br.com.gardenall.domain.PlantaService;
 import br.com.gardenall.domain.SQLiteHandler;
+import br.com.gardenall.utils.NetworkUtils;
+
+import static br.com.gardenall.Callback.CallbackPlantas.getFragmentRefreshListener;
 
 public class PlantaActivity extends AppCompatActivity {
     private boolean isUsingTransition = false;
@@ -36,6 +41,15 @@ public class PlantaActivity extends AppCompatActivity {
     private MaterialFavoriteButton favorite;
     private HashMap<String,String> user;
     private SQLiteHandler db2;
+
+    private TextView colheitaMin;
+    private TextView epocaSul;
+    private TextView epocaSudeste;
+    private TextView epocaCentroOeste;
+    private TextView epocaNorte;
+    private TextView epocaNordeste;
+    private TextView sol;
+    private TextView regar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +94,27 @@ public class PlantaActivity extends AppCompatActivity {
         else
             favorite.setFavorite(false);
         favorite.setOnFavoriteChangeListener(onFavoriteChange());
+        setInfo();
         loadItem();
+    }
+
+    private void setInfo() {
+        colheitaMin = (TextView) findViewById(R.id.colheitaMin);
+        epocaSul = (TextView) findViewById(R.id.epocaSul);
+        epocaSudeste = (TextView) findViewById(R.id.epocaSudeste);
+        epocaCentroOeste = (TextView) findViewById(R.id.epocaCentroOeste);
+        epocaNorte = (TextView) findViewById(R.id.epocaNorte);
+        epocaNordeste = (TextView) findViewById(R.id.epocaNordeste);
+        sol = (TextView) findViewById(R.id.sol);
+        regar = (TextView) findViewById(R.id.regar);
+        colheitaMin.setText("Tempo mínimo para colheita: " + planta.getColheitaMin() + " dias");
+        epocaSul.setText("Época região Sul: " + planta.getEpocaSul());
+        epocaSudeste.setText("Época região Sudeste: " + planta.getEpocaSudeste());
+        epocaCentroOeste.setText("Época região Centro Oeste: " + planta.getEpocaCentroOeste());
+        epocaNordeste.setText("Época região Nordeste: " + planta.getEpocaNordeste());
+        epocaNorte.setText("Época região Norte: " + planta.getEpocaNorte());
+        sol.setText("Exposição ao Sol: " + planta.getSol());
+        regar.setText("Como regar: " + planta.getRegar());
     }
 
     private MaterialFavoriteButton.OnFavoriteChangeListener onFavoriteChange() {
@@ -107,10 +141,21 @@ public class PlantaActivity extends AppCompatActivity {
                 p = db.findByNome(planta.getNomePlanta());
                 user = db2.getUserDetails();
                 if(p == null) {
-                    Log.d("IDP: ", Long.toString(planta.getId()));
-                    PlantaService.savePlanta(getBaseContext(), planta);
-                    PlantaService.savePlantaWeb(planta.getId(), user.get("email"));
-                    Toast.makeText(getBaseContext(), "Planta salva com sucesso!", Toast.LENGTH_SHORT).show();
+                    if (NetworkUtils.isNetworkAvailable(getApplicationContext())) { /* Internet disponivel */
+                        if(getFragmentRefreshListener() != null) {
+                            getFragmentRefreshListener().onRefresh(planta);
+                        }
+                        PlantaService.savePlanta(getBaseContext(), planta);
+                        PlantaService.savePlantaWeb(planta.getId(), user.get("email"));
+                        Toast.makeText(getBaseContext(), "Planta salva com sucesso!", Toast.LENGTH_SHORT).show();
+                    } else { /* Internet indisponivel */
+                        android.support.design.widget.Snackbar.make(findViewById(R.id.planta_content),
+                                R.string.error_conexao_indisponivel,
+                                Snackbar.LENGTH_LONG)
+                                .setAction(R.string.ok, onClickSnackBar())
+                                .setActionTextColor(getBaseContext().getResources().getColor(R.color.colorLink))
+                                .show();
+                    }
                 } else {
                     Toast.makeText(getBaseContext(), "Planta já salva na lista do usuário!", Toast.LENGTH_SHORT).show();
                 }
@@ -128,14 +173,14 @@ public class PlantaActivity extends AppCompatActivity {
 
     private void loadThumbnail() {
         Picasso.with(this)
-                .load(planta.getUrlImagem())
+                .load(AppController.imagens.get(planta.getId() - 1))
                 .noFade()
                 .into(image);
     }
 
     private void loadFullSizeImage() {
         Picasso.with(this)
-                .load(planta.getUrlImagem())
+                .load(AppController.imagens.get(planta.getId() - 1))
                 .noFade()
                 .noPlaceholder()
                 .into(image);
@@ -160,5 +205,15 @@ public class PlantaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private View.OnClickListener onClickSnackBar() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /* Intent it = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                startActivity(it); */
+            }
+        };
     }
 }

@@ -4,19 +4,23 @@ package br.com.gardenall.activity;
  * Created by diego on 04/09/16.
  */
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.provider.Settings;
-import android.support.design.widget.Snackbar;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -29,10 +33,9 @@ import br.com.gardenall.R;
 import br.com.gardenall.adapter.CatalogoAdapter;
 import br.com.gardenall.domain.Planta;
 import br.com.gardenall.domain.PlantaService;
-import br.com.gardenall.utils.NetworkUtils;
+import br.com.gardenall.provider.SearchableProvider;
 
 public class CatalogoActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private Toolbar toolbar;
     private ArrayList<Planta> plantas;
     private GridView gridView;
@@ -58,21 +61,14 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.setOnItemClickListener(this);
 
-        // Swipe Refresh Layout
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(onRefreshListener());
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
-                R.color.refresh_progress_2,
-                R.color.refresh_progress_3);
-
         // Prepara o conjunto de dados
-        taskPlantas(false);
+        taskPlantas();
     }
 
-    private void taskPlantas(boolean refresh){
+    private void taskPlantas() {
         // Busca as plantas
         try {
-            this.plantas = PlantaService.getCatalogoDePlantas(this, refresh);
+            this.plantas = PlantaService.getCatalogoDePlantas(this);
             // Atualiza a lista
             gridView.setAdapter(new CatalogoAdapter(this, plantas));
             ((CatalogoAdapter) gridView.getAdapter()).notifyDataSetChanged();
@@ -82,42 +78,37 @@ public class CatalogoActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
-        return new SwipeRefreshLayout.OnRefreshListener() {
-            // Atualiza ao fazer o gesto Pull to Refresh
-            @Override
-            public void onRefresh() {
-                // Valida se existe conexão ao fazer o gesto Pull to Refresh
-                if(NetworkUtils.isNetworkAvailable(getBaseContext())){
-                    taskPlantas(true);
-                    mSwipeRefreshLayout.setRefreshing(false);
-                } else{
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    android.support.design.widget.Snackbar.make(gridView, R.string.error_conexao_indisponivel,
-                            Snackbar.LENGTH_LONG)
-                            .setAction("Ok", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent it = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                    startActivity(it);
-                                }
-                            })
-                            .setActionTextColor(getBaseContext().getResources().getColor(R.color.colorLink))
-                            .show();
-                }
-            }
-        };
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_catalogo, menu);
+        SearchView searchView;
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            searchView = (SearchView) menu.findItem(R.id.action_searchable).getActionView();
+        }
+        else {
+            MenuItem item = menu.findItem(R.id.action_searchable);
+            searchView = (SearchView) MenuItemCompat.getActionView(item);
+        }
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return super.onCreateOptionsMenu(menu);
     }
 
-    /*@Override
-    public void onResume(){
-        super.onResume();
-        if(CarrosApplication.getInstance().isPrecisaAtualizar(this.tipo)){
-            // Se teve alterações no banco de dados, vamos atualizar a lista.
-            taskCarros(false);
-            toast("Lista de carros atualizada!");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_delete) {
+            SearchRecentSuggestions searchRecentSuggestions = new SearchRecentSuggestions(this,
+                    SearchableProvider.AUTHORITY,
+                    SearchableProvider.MODE);
+            searchRecentSuggestions.clearHistory();
+            Toast.makeText(this, "Pesquisas recentes removidas", Toast.LENGTH_SHORT).show();
         }
-    }*/
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import br.com.gardenall.R;
+import br.com.gardenall.domain.AppController;
 import br.com.gardenall.domain.Planta;
 
 public class CatalogoAdapter extends BaseAdapter {
@@ -69,7 +70,7 @@ public class CatalogoAdapter extends BaseAdapter {
             holder.progress.setVisibility(View.VISIBLE);
 
             // Faz o download da foto e mostra o ProgressBar
-            Picasso.with(context).load(planta.getUrlImagem()).noFade().into(holder.image,
+            Picasso.with(context).load(AppController.imagens.get(planta.getId() - 1)).noFade().into(holder.image,
                     new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {

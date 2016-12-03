@@ -4,12 +4,8 @@ package br.com.gardenall.domain;
  * Created by diego on 29/08/16.
  */
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,23 +17,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import br.com.gardenall.Callback.VolleyCallBack;
 import br.com.gardenall.R;
-import br.com.gardenall.activity.MainActivity;
 import br.com.gardenall.utils.FileUtils;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class PlantaService {
     public static final String TAG = "PlantaService";
-
-
 
     public static ArrayList<Planta> getPlantas(Context context, boolean refresh) throws IOException {
         boolean searchInDB = !refresh;
@@ -57,23 +47,21 @@ public class PlantaService {
                 return plantasUser;
             }
         }
-        return plantasUser;
+        // Se não existe nada no BD, inicializa o vetor
+        return new ArrayList<>();
     }
 
-    public static ArrayList<Planta> getCatalogoDePlantas(Context context, boolean refresh) throws IOException {
-        ArrayList<Planta> plantas = null;
-        boolean searchInDB = !refresh;
-        if(searchInDB) {
-            // Busca no banco de dados
-            plantas = getCatalogoDePlantasFromDB(context);
-            if(plantas != null && plantas.size() > 0) {
-                // Retorna as plantas encontradas no banco
-                return plantas;
-            }
+    public static ArrayList<Planta> getCatalogoDePlantas(Context context) throws IOException {
+        ArrayList<Planta> plantas;
+        // Busca no banco de dados
+        plantas = getCatalogoDePlantasFromDB(context);
+        if(plantas != null && plantas.size() > 0) {
+            // Retorna as plantas encontradas no banco
+            return plantas;
+        } else { // Se não encontrar, busca no json
+            plantas = getCatalogoDePlantasFromJSON(context);
+            return plantas;
         }
-        // Se não encontrar, busca na web
-        plantas = getCatalogoDePlantasFromWeb(context);
-        return plantas;
     }
 
     private static ArrayList<Planta> getPlantasFromDB(Context context) throws IOException {
@@ -96,7 +84,7 @@ public class PlantaService {
         }
     }
 
-    private static ArrayList<Planta> getCatalogoDePlantasFromWeb(Context context) throws IOException {
+    private static ArrayList<Planta> getCatalogoDePlantasFromJSON(Context context) throws IOException {
         String json = FileUtils.readRawFileString(context, R.raw.plantas, "UTF-8");
         ArrayList<Planta> plantas = parserJSON(context, json);
         // Depois de buscar, salva as plantas
@@ -125,18 +113,17 @@ public class PlantaService {
         }
     }
 
-    public static void savePlantaWeb(final Long id_p, final String email){
-
+    public static void savePlantaWeb(final int id_p, final String email) {
         // Tag used to cancel the request
         String tag_string_req = "req_plantada";
         Log.d("email: ", email);
-        Log.d("id_p: ", Long.toString(id_p));
+        Log.d("id_p: ", Integer.toString(id_p));
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 Variaveis.URL_PLANTADA, new com.android.volley.Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+                Log.e(TAG, "Register Response: " + response.toString());
             }
         }, new com.android.volley.Response.ErrorListener() {
 
@@ -151,28 +138,26 @@ public class PlantaService {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
-                params.put("id_p", Long.toString(id_p));
+                params.put("id_p", Integer.toString(id_p));
                 return params;
             }
-
         };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    public static void deletePlantaWeb(final Long id_p, final String email){
-
+    public static void deletePlantaWeb(final int id_p, final String email) {
         // Tag used to cancel the request
         String tag_string_req = "req_plantada";
-        Log.d("id_p: ", Long.toString(id_p));
+        Log.d("id_p: ", Integer.toString(id_p));
         Log.d("email: ", email);
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 Variaveis.URL_DELETE, new com.android.volley.Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+                Log.e(TAG, "Register Response: " + response.toString());
             }
         }, new com.android.volley.Response.ErrorListener() {
 
@@ -187,10 +172,9 @@ public class PlantaService {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
-                params.put("id_p", Long.toString(id_p));
+                params.put("id_p", Integer.toString(id_p));
                 return params;
             }
-
         };
 
         // Adding request to request queue
@@ -221,8 +205,6 @@ public class PlantaService {
             db.deleteAllOnCatalogo();
             // Salva todas as plantas
             for(Planta planta : plantas) {
-                // p.tipo = tipo;
-                Log.d("PlantaInsert: ", planta.getNomePlanta());
                 db.saveOnCatalogo(planta);
             }
         } finally {
@@ -241,10 +223,17 @@ public class PlantaService {
                 JSONObject jsonLinha = jsonPlantas.getJSONObject(i);
                 Planta planta = new Planta();
                 // Lê as informações de cada planta
-                planta.setId(jsonLinha.optLong("_id"));
+                planta.setId(jsonLinha.optInt("_id"));
                 planta.setNomePlanta(jsonLinha.optString("nomePlanta"));
                 planta.setUrlImagem(jsonLinha.optString("urlPlanta"));
-                // planta.setFavorito(jsonLinha.optInt("favorito"));
+                planta.setColheitaMin(jsonLinha.optString("colheitaMin"));
+                planta.setEpocaSul(jsonLinha.optString("epocaSul"));
+                planta.setEpocaSudeste(jsonLinha.optString("epocaSudeste"));
+                planta.setEpocaCentroOeste(jsonLinha.optString("epocaCentroOeste"));
+                planta.setEpocaNordeste(jsonLinha.optString("epocaNordeste"));
+                planta.setEpocaNorte(jsonLinha.optString("epocaNorte"));
+                planta.setSol(jsonLinha.optString("sol"));
+                planta.setRegar(jsonLinha.optString("regar"));
                 plantas.add(planta);
             }
         }
@@ -290,11 +279,11 @@ public class PlantaService {
                 JSONObject jsonLinha = jsonPlantas.getJSONObject(i);
                 Planta planta = new Planta();
                 // Lê as informações de cada planta
-                planta.setId(jsonLinha.optLong("id_p"));
+                planta.setId(jsonLinha.optInt("id_p"));
                 Planta planta2 = db.findByIdOnCatalogo(jsonLinha.optLong("id_p"));
                 if (planta2 == null){
                     try{
-                        getCatalogoDePlantas(getApplicationContext(), true);
+                        getCatalogoDePlantas(getApplicationContext());
                         planta2 = db.findByIdOnCatalogo(jsonLinha.optLong("id_p"));
                     }catch(IOException e){
                         e.printStackTrace();

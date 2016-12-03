@@ -33,7 +33,7 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Insere uma nova atividade na lista do usuario, ou atualiza se já existe
-    public long save(AppController.Atividade at) {
+    public long save(Atividade at) {
         long id = at.getId();
         SQLiteDatabase db = getWritableDatabase();
         try {
@@ -59,7 +59,7 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Deleta a atividade
-    public int delete(AppController.Atividade at) {
+    public int delete(Atividade at) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             // delete from atividade where _id=?
@@ -77,13 +77,13 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Busca a atividade pelo nome
-    public AppController.Atividade findByNome(String nome) {
+    public Atividade findByNome(String nome) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             // select * from atividade
             Cursor c = db.query(ATIVIDADE_DB, null, "nomeAtividade = ?", new String[]{nome}, null, null, null, null);
             if (c.moveToFirst()) {
-                AppController.Atividade at = new AppController.Atividade();
+                Atividade at = new Atividade();
                 read(c, at);
                 return at;
             }
@@ -94,7 +94,7 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Lista todas atividades do usuario
-    public ArrayList<AppController.Atividade> findAll() {
+    public ArrayList<Atividade> findAll() {
         SQLiteDatabase db = getWritableDatabase();
         try {
             // select * from atividade
@@ -106,11 +106,11 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Lê o cursor e cria a lista de atividades
-    private ArrayList<AppController.Atividade> toList(Cursor c) {
-        ArrayList<AppController.Atividade> ats = new ArrayList<AppController.Atividade>();
+    private ArrayList<Atividade> toList(Cursor c) {
+        ArrayList<Atividade> ats = new ArrayList<Atividade>();
         if (c.moveToFirst()) {
             do {
-                AppController.Atividade at = new AppController.Atividade();
+                Atividade at = new Atividade();
                 // recupera os atributos de atividade
                 at.setId(c.getLong(c.getColumnIndex("_id")));
                 at.setTitulo(c.getString(c.getColumnIndex("nomeAtividade")));
@@ -123,14 +123,14 @@ public class AtividadeDB extends SQLiteOpenHelper {
     }
 
     // Faz a leitura dos atributos de planta
-    private void read(Cursor c, AppController.Atividade at) {
+    private void read(Cursor c, Atividade at) {
         at.setId(c.getLong(c.getColumnIndex("_id")));
         at.setTitulo(c.getString(c.getColumnIndex("nomeAtividade")));
         at.setDescricao(c.getString(c.getColumnIndex("desc")));
         at.setHorario(c.getString(c.getColumnIndex("horario")));
     }
 
-    public void update(AppController.Atividade atividade) {
+    public void update(Atividade atividade) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             ContentValues values = new ContentValues();

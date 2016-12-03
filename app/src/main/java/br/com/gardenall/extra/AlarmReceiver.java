@@ -25,6 +25,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent notifIntent = new Intent(context,MainActivity.class);
 
-        NotificationUtil.create(context, 1, notifIntent, R.mipmap.logotipo, "GardenAll", "Você tem uma atividade agendada para agora");
+        NotificationUtil.create(context, 1, notifIntent, R.mipmap.ic_launcher, "GardenAll", "Você tem uma atividade agendada para agora");
     }
 }

@@ -6,6 +6,10 @@
 
     <string name="action_disconnect">Desconectar</string>
 
+    <string name="action_remove_activity">Remover atividade</string>
+    <string name="action_sure_remove_activity">Tem certeza que quer remover a atividade?</string>
+
+
     <string name="action_exit">Sair</string>
     <string name="action_sure_disconnect">Tem certeza que quer se desconectar?</string>
     <string name="negative">Não</string>

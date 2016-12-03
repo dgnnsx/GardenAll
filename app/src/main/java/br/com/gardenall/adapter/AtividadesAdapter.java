@@ -11,20 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.com.gardenall.R;
-import br.com.gardenall.domain.AppController;
+import br.com.gardenall.domain.Atividade;
 
 public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.ViewHolder> {
     private final Context context;
-    private final List<AppController.Atividade> atividades;
+    private final List<Atividade> atividades;
     private AtividadeOnClickListener atividadeOnClickListener;
 
-    public AtividadesAdapter(Context context, List<AppController.Atividade> atividades, AtividadeOnClickListener atividadeOnClickListener){
+    public AtividadesAdapter(Context context, List<Atividade> atividades, AtividadeOnClickListener atividadeOnClickListener){
         this.context = context;
         this.atividades = atividades;
         this.atividadeOnClickListener = atividadeOnClickListener;
@@ -40,7 +41,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // Atualiza a view
-        AppController.Atividade atividade = atividades.get(position);
+        final Atividade atividade = atividades.get(position);
         holder.titulo.setText(atividade.getTitulo());
         holder.descricao.setText(atividade.getDescricao());
         holder.horario.setText(atividade.getHorario());
@@ -71,6 +72,13 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
                     }
                 }
             });
+
+            holder.btnExcluir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    atividadeOnClickListener.onClickExcluir(position);
+                }
+            });
         }
     }
 
@@ -82,8 +90,9 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
     public interface AtividadeOnClickListener{
         public void onClickBtnLeft(Button buttonL, Button buttonR, int idx, TextView horario);
         public void onClickBtnRight(Button button, int idx);
-        public void onSwitchTurnedOn(View view, int idx);
+        public void onSwitchTurnedOn(Switch switcher, int idx);
         public void onSwitchTurnedOff(View view, int idx);
+        public void onClickExcluir(int idx);
     }
 
     // ViewHolder com as views
@@ -94,6 +103,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
         Switch switchAlarme;
         Button btnLeft;
         Button btnRight;
+        ImageButton btnExcluir;
 
         public ViewHolder(View view){
             super(view);
@@ -102,6 +112,7 @@ public class AtividadesAdapter extends RecyclerView.Adapter<AtividadesAdapter.Vi
             horario = (TextView) view.findViewById(R.id.textId);
             btnLeft = (Button) view.findViewById(R.id.btnLeft);
             btnRight = (Button) view.findViewById(R.id.btnRight);
+            btnExcluir = (ImageButton) view.findViewById(R.id.btnExcluir);
             switchAlarme = (Switch) view.findViewById(R.id.switchId);
         }
     }
